@@ -1,6 +1,8 @@
 # Project
 Repository for hosting RTR2017 Final Project
 
+Idea can be found at: https://docs.google.com/document/d/1upf7tDbqfl3QZoaCxFFnFiGu49uX4hOHmkiuX2KfyOI/edit?usp=sharing
+
 The project structure is as follows -
 
 Root

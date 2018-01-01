@@ -50,10 +50,13 @@ extern "C"
 
     /// Method for performing one-time renderer initialization.
     /// Renderer can initialize global/static instances as part of this method
-    /// @param : This method does not accept any parameter
-    /// @return COMPONENT_RESULT_SUCCESS if succeded
-    ///         COMPONENT_RESULT_ERROR if failed.
-    typedef ComponentResult(*INITIALIZE_PROC)(void);
+    /// @param window identifier of the window where drawing is directed
+    /// @return RENDERER_RESULT_SUCCESS if succeded
+    ///         RENDERER_RESULT_ERROR if failed.
+#ifdef _WIN32
+    #define Window HWND
+#endif
+    typedef RendererResult(*INITIALIZE_PROC)(Window window);
 
     /// Method for performing one-time renderer un-initialization before it is unloaded
     /// Renderer can perform global cleanup as part of this method
@@ -63,9 +66,9 @@ extern "C"
     /// This method will be called by the host before rendering a scene.
     /// Renderer should do initialization of scene specific things as part of this method
     /// @param scene Identifier of a scene to be initialized
-    /// @return COMPONENT_RESULT_SUCCESS if succeded
-    ///         COMPONENT_RESULT_ERROR if failed.
-    typedef ComponentResult (*SCENE_INITIALIZE_PROC)(SceneType scene);
+    /// @return RENDERER_RESULT_SUCCESS if succeded
+    ///         RENDERER_RESULT_ERROR if failed.
+    typedef RendererResult (*SCENE_INITIALIZE_PROC)(SceneType scene);
 
     /// Method for performing scene-specific initialization
     /// This method will be called by the host after rendering a scene.
@@ -79,12 +82,12 @@ extern "C"
     /// @param scene describes the scene identifier for which the method is called
     /// @param elapsed describes the time elapsed from starting of this scene
     /// @param frameId describes the frameId specific to scene
-    /// @return COMPONENT_RESULT_SUCCESS if succeded in building the frame
-    ///         COMPONENT_RESULT_ERROR if failed in building the frame
-    ///         COMPONENT_RESULT_FINISHED if renderer has finished building its last frame of the scene.
+    /// @return RENDERER_RESULT_SUCCESS if succeded in building the frame
+    ///         RENDERER_RESULT_ERROR if failed in building the frame
+    ///         RENDERER_RESULT_FINISHED if renderer has finished building its last frame of the scene.
     ///                                   in such cases no further frame calls would be made for this scene
     ///                                   to the renderer.
-    typedef ComponentResult (*RENDER_SCENE_PROC)(SceneType scene, unsigned long long elapsed, unsigned long long frameId);
+    typedef RendererResult (*RENDER_SCENE_PROC)(SceneType scene, unsigned long long elapsed, unsigned long long frameId);
 
     /// Generic method to notify renderers about a message posted to renderer window. The message can be
     /// from system or initiated by the host itself.

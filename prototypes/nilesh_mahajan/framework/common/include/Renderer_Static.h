@@ -1,4 +1,4 @@
-/// @file Interfaces.h
+/// @file Renderer_Static.h
 /// @brief Defines the interface between OpenGL generic host process and its pluggable 'Renderer' clients
 ///        Host: Framework OpenGL host process which will load multiple renderers for rendering a scene
 ///        Renderer: Implementer of the scene container in its class
@@ -26,13 +26,13 @@ namespace Interfaces
     /// will be transitioned in below cases -
     /// 1. When all components have finished rendering present scene
     /// 2. There is request to the renderer to switch the scene.
-    typedef enum SceneType_t
+    enum SceneType
     {
         /// General initialization for all the scenes implemented by the component
         SCENE_TYPE_TEST0 = 0,
         SCENE_TYPE_TEST1 = 1,
         /// Add more scenes here in right order
-    } SceneType;
+    };
 
 #ifdef _WIN32
     struct Message

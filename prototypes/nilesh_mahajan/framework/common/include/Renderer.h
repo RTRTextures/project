@@ -1,4 +1,4 @@
-/// @file Interfaces.h
+/// @file Renderer.h
 /// @brief Defines the interface between OpenGL generic host process and its pluggable 'Renderer' clients
 ///        Host: Framework OpenGL host process which will load multiple renderers for rendering a scene
 ///        Renderer: Implementer of the scene container in dynamic linked library.

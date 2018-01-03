@@ -1,0 +1,16 @@
+# ignore visual studio files
+
+**.vs/
+**.db
+**.opendb
+
+**/Debug/*
+!**/Debug/*.exe
+!**/Debug/*.lib
+!**/Debug/*.dll
+
+**/Release/*
+!**/Release/*.exe
+!**/Release/*.lib
+!**/Release/*.dll
+

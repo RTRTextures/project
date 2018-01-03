@@ -41,9 +41,11 @@ extern "C"
     typedef enum SceneType_t
     {
         /// General initialization for all the scenes implemented by the component
-        SCENE_TYPE_TEST0 = 0,
-        SCENE_TYPE_TEST1 = 1,
+        SCENE_TYPE_FIRST = 0,
+        SCENE_TYPE_TEST0 = SCENE_TYPE_FIRST,
         /// Add more scenes here in right order
+        ///
+        SCENE_TYPE_LAST /// This should always be the last scene
     } SceneType;
 
     /// Types describing various methods implemented as part of the interface

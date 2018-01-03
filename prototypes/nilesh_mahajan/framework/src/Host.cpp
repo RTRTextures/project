@@ -128,6 +128,7 @@ namespace Framework
 
         if (result != RENDERER_RESULT_ERROR)
         {
+            m_sceneFrameCounter++;
             SwapBuffers();
         }
 

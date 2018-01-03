@@ -11,14 +11,14 @@ namespace Framework
     class Host
     {
     private:
-        SceneType                                   m_current;
-        unsigned long long                          m_sceneStartTimestamp;
-        unsigned long long                          m_sceneFrameCounter;
-        std::list<RendererState>                    &m_renderers;
+        SceneType                   m_current;
+        unsigned long long          m_sceneStartTimestamp;
+        unsigned long long          m_sceneFrameCounter;
+        std::list<RendererState>    &m_renderers;
 
     protected:
-        Window                                      m_window;
-        bool                                        m_exitLoop;
+        Window                      m_window;
+        bool                        m_exitLoop;
                         Host();
         virtual         ~Host();
 

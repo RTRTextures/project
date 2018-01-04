@@ -42,10 +42,10 @@ extern "C"
     {
         /// General initialization for all the scenes implemented by the component
         SCENE_TYPE_FIRST = 0,
-        SCENE_TYPE_TEST0 = 0,
-        SCENE_TYPE_TEST1 = 1,
+        SCENE_TYPE_TEST0 = 1,
+        SCENE_TYPE_TEST1 = 2,
         /// Add more scenes here in right order
-        SCENE_TYPE_LAST = 2
+        SCENE_TYPE_LAST = 3
     } SceneType;
 
     /// Types describing various methods implemented as part of the interface

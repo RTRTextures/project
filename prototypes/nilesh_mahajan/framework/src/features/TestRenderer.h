@@ -7,6 +7,7 @@ namespace Features
 {
     using namespace Interfaces;
 
+    // Sample renderer to render multi-color pyramid as part of SCENE_TYPE_TEST0 scene
     class TestRenderer : public IRenderer
     {
     public:
@@ -141,6 +142,7 @@ namespace Features
         }
     };
 
+    // Sample renderer to render yellow colored pyramid as part of SCENE_TYPE_TEST1 scene
     class TestRenderer2 : public IRenderer
     {
     public:

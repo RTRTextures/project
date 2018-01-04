@@ -30,7 +30,8 @@ namespace Framework
                 if (Initialize(m_window) == RENDERER_RESULT_SUCCESS)
                 {
                     Resize(WIN_WIDTH, WIN_HEIGHT);
-
+                    // begin scene
+                    SwitchScene();
                     while (!m_exitLoop)
                     {
                         if (!PumpMessage() && m_isActive)
@@ -129,6 +130,11 @@ namespace Framework
                     RENDERER_RESULT_SUCCESS : RENDERER_RESULT_ERROR;
             }
         }
+
+        // init scene specific variables
+        m_sceneStartTimestamp = SystemMicrosecsTimestamp();
+        m_sceneFrameCounter = 0;
+
         return result;
     }
 
@@ -196,8 +202,11 @@ namespace Framework
 
         if (m_current < SCENE_TYPE_LAST)
         {
-            // Uninitialize current scene
-            UninitializeScene();
+            if (m_current > SCENE_TYPE_FIRST)
+            {
+                // Uninitialize current scene
+                UninitializeScene();
+            }
 
             unsigned current = static_cast<unsigned>(m_current);
             m_current = static_cast<SceneType>(current + 1);
@@ -206,8 +215,6 @@ namespace Framework
             {
                 // initialze the new scene
                 result = InitializeScene();
-                m_sceneStartTimestamp = SystemMicrosecsTimestamp();
-                m_sceneFrameCounter = 0;
             }
         }
 

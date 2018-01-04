@@ -41,10 +41,10 @@
     <ClCompile Include="src\features\RendererRegistrar.cpp">
       <Filter>src\features</Filter>
     </ClCompile>
-    <ClCompile Include="WinHost.cpp">
+    <ClCompile Include="src\WinFrameWorkUtil.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\WinFrameWorkUtil.cpp">
+    <ClCompile Include="src\WinHost.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

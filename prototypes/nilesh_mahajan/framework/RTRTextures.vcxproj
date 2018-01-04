@@ -29,7 +29,7 @@
     <ClCompile Include="src\features\RendererRegistrar.cpp" />
     <ClCompile Include="src\WinFrameWorkUtil.cpp" />
     <ClCompile Include="src\Host.cpp" />
-    <ClCompile Include="WinHost.cpp" />
+    <ClCompile Include="src\WinHost.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D616B408-0BDC-4094-BA93-0FC1D23418F7}</ProjectGuid>

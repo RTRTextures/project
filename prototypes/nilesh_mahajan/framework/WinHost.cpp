@@ -1,14 +1,9 @@
 
 #include "Host.h"
 #include <Windows.h>
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
 namespace Framework
 {
-    static const unsigned WIN_WIDTH     = 800;
-    static const unsigned WIN_HEIGHT    = 600;
-
     class WindowsHost : public Host
     {
         wchar_t m_className[128];
@@ -129,11 +124,6 @@ namespace Framework
                     if (m_hrc != NULL)
                     {
                         ret = wglMakeCurrent(m_hdc, m_hrc) == TRUE;
-
-                        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-                        glClearDepth(1.0f);                 // set depth buffer
-                        glEnable(GL_DEPTH_TEST);            // enable depth testing
-                        glDepthFunc(GL_LEQUAL);             // type of depth testing
                     }
                 }
             }

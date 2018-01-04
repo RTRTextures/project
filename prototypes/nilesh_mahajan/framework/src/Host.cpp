@@ -1,5 +1,7 @@
 #include "Host.h"
 #include "RendererRegistrar.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 namespace Framework
 {
@@ -26,6 +28,8 @@ namespace Framework
             {
                 if (Initialize(m_window) == RENDERER_RESULT_SUCCESS)
                 {
+                    Resize(WIN_WIDTH, WIN_HEIGHT);
+
                     while (!m_exitLoop)
                     {
                         if (!PumpMessage())
@@ -61,6 +65,13 @@ namespace Framework
     RendererResult Host::Initialize(Window window)
     {
         RendererResult result = RENDERER_RESULT_SUCCESS;
+
+        // do global initializations
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearDepth(1.0f);                 // set depth buffer
+        glEnable(GL_DEPTH_TEST);            // enable depth testing
+        glDepthFunc(GL_LEQUAL);             // type of depth testing
+
         for (auto rendererEntry = m_renderers.begin();
             rendererEntry != m_renderers.end() && result != RENDERER_RESULT_ERROR;
             ++rendererEntry)
@@ -85,6 +96,23 @@ namespace Framework
         }
     }
 
+    void Host::Resize(unsigned long width, unsigned long height)
+    {
+        //code
+        if (height == 0)
+        {
+            height = 1;
+        }
+        glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+
+        // select projection matrix
+        glMatrixMode(GL_PROJECTION);
+        // reset projection matrix
+        glLoadIdentity();
+        // calculate the aspect ratio of the view
+        gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+    }
+
     RendererResult Host::InitializeScene()
     {
         RendererResult result = RENDERER_RESULT_SUCCESS;
@@ -106,6 +134,12 @@ namespace Framework
     RendererResult Host::Render()
     {
         RendererResult result = RENDERER_RESULT_FINISHED;
+
+        // basic operations
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
         for (auto rendererEntry = m_renderers.begin();
             rendererEntry != m_renderers.end() && result != RENDERER_RESULT_ERROR;
             ++rendererEntry)

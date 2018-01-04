@@ -8,6 +8,9 @@ namespace Framework
     using namespace Interfaces;
     using namespace Features;
 
+    const unsigned WIN_WIDTH = 800;
+    const unsigned WIN_HEIGHT = 600;
+
     class Host
     {
     private:
@@ -37,6 +40,8 @@ namespace Framework
 
     protected:
         void            OnMessage(const Message* message);
+        void            Resize(unsigned long width, unsigned long height);
+
         // methods need to be implemented by the child class
         virtual void    CreateDrawable() = 0;
         virtual void    DestroyDrawable() = 0;

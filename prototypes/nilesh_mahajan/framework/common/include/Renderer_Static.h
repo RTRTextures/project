@@ -50,6 +50,11 @@ namespace Interfaces
     class IRenderer
     {
     public:
+        /// Method for retrieving name of the renderer
+        /// @return NULL on failure otherwise pointer to null-terminated string mentioning name of
+        //               this renderer.
+        virtual const char* GetName() = 0;
+
         /// Method for performing one-time renderer initialization.
         /// Renderer can initialize global/static instances as part of this method
         /// @param window identifier of the window where drawing is directed

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{3761e710-4ba4-47a2-a197-66709404b4a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\include">
+      <UniqueIdentifier>{449a890a-1463-48b4-bba1-83d936cb2212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\src">
+      <UniqueIdentifier>{cae27f40-a121-424a-9bae-66334bfb9567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{b8728f8d-4590-43b1-97e7-24a8acda963d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\features">
+      <UniqueIdentifier>{b9bef402-02e2-4150-8d97-64f74b932eac}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Host.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="common\include\Renderer.h">
+      <Filter>common\include</Filter>
+    </ClInclude>
+    <ClInclude Include="common\include\Renderer_Static.h">
+      <Filter>common\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RendererRegistrar.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\TestRenderer.h">
+      <Filter>src\features</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Host.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\features\RendererRegistrar.cpp">
+      <Filter>src\features</Filter>
+    </ClCompile>
+    <ClCompile Include="WinHost.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WinFrameWorkUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

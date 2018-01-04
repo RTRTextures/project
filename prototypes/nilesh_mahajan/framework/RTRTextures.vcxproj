@@ -21,9 +21,9 @@
   <ItemGroup>
     <ClInclude Include="common\include\Renderer.h" />
     <ClInclude Include="common\include\Renderer_Static.h" />
+    <ClInclude Include="src\features\RendererRegistrar.h" />
     <ClInclude Include="src\features\TestRenderer.h" />
     <ClInclude Include="src\Host.h" />
-    <ClInclude Include="src\RendererRegistrar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\features\RendererRegistrar.cpp" />

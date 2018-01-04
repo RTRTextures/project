@@ -45,7 +45,7 @@ extern "C"
         SCENE_TYPE_TEST0 = 1,
         SCENE_TYPE_TEST1 = 2,
         /// Add more scenes here in right order
-        SCENE_TYPE_LAST = 3
+        SCENE_TYPE_LAST
     } SceneType;
 
     /// Types describing various methods implemented as part of the interface

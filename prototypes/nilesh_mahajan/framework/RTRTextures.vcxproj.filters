@@ -27,10 +27,10 @@
     <ClInclude Include="common\include\Renderer_Static.h">
       <Filter>common\include</Filter>
     </ClInclude>
-    <ClInclude Include="src\RendererRegistrar.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\features\TestRenderer.h">
+      <Filter>src\features</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\RendererRegistrar.h">
       <Filter>src\features</Filter>
     </ClInclude>
   </ItemGroup>

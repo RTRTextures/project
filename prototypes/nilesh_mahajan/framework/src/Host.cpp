@@ -13,7 +13,8 @@ namespace Framework
         m_sceneFrameCounter(0ll),
         m_renderers(Features::GetRenderers()),
         m_window(NULL),
-        m_exitLoop(false)
+        m_exitLoop(false),
+        m_isActive(true)
     {
     }
 
@@ -32,7 +33,7 @@ namespace Framework
 
                     while (!m_exitLoop)
                     {
-                        if (!PumpMessage())
+                        if (!PumpMessage() && m_isActive)
                         {
                             RendererResult rendererResult = Render();
                             if (RENDERER_RESULT_FINISHED == rendererResult)

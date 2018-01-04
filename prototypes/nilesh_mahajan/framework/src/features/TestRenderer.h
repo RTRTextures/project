@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Renderer_Static.h>
-#include <Windows.h>
 #include <gl\GL.h>
 
 namespace Features

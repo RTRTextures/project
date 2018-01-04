@@ -9,12 +9,18 @@ namespace Framework
         wchar_t m_className[128];
         HDC     m_hdc;
         HGLRC   m_hrc;
+        bool    m_isFullscreen;
+        DWORD   m_windowStyle;
+        WINDOWPLACEMENT m_wpPrev;
 
     public:
         WindowsHost() :
             m_hdc(NULL),
-            m_hrc(NULL)
+            m_hrc(NULL),
+            m_isFullscreen(false),
+            m_windowStyle(0)
         {
+            ZeroMemory(&m_wpPrev, sizeof(m_wpPrev));
         }
 
         ~WindowsHost()
@@ -40,6 +46,39 @@ namespace Framework
         {
             Message messageStruct = { message, wParam, lParam };
             OnMessage(&messageStruct);
+
+            switch (message)
+            {
+            case WM_ACTIVATE:
+                if (HIWORD(wParam) == 0)
+                    m_isActive = true;
+                else
+                    m_isActive = false;
+                break;
+            case WM_SIZE:
+                Resize(LOWORD(lParam), HIWORD(lParam));
+                break;
+            case WM_KEYDOWN:
+                switch (wParam)
+                {
+                case VK_ESCAPE:
+                    m_exitLoop = true;
+                    break;
+                }
+                break;
+            case WM_CHAR:
+                switch (wParam)
+                {
+                case 'F':
+                case 'f':
+                    ToggleFullscreen();
+                    break;
+                }
+                break;
+            case WM_DESTROY:
+                PostQuitMessage(0);
+                break;
+            }
         }
 
     protected:
@@ -148,12 +187,31 @@ namespace Framework
 
         void ToggleFullscreen()
         {
-            // TODO
-        }
+            MONITORINFO mi;
+            if (!m_isFullscreen)
+            {
+                m_windowStyle = GetWindowLong(m_window, GWL_STYLE);
+                if (m_windowStyle & WS_OVERLAPPEDWINDOW)
+                {
+                    mi = { sizeof(MONITORINFO) };
+                    if (GetWindowPlacement(m_window, &m_wpPrev) && GetMonitorInfo(MonitorFromWindow(m_window, MONITORINFOF_PRIMARY), &mi))
+                    {
+                        SetWindowLong(m_window, GWL_STYLE, m_windowStyle & ~WS_OVERLAPPEDWINDOW);
+                        SetWindowPos(m_window, HWND_TOP, mi.rcMonitor.left, mi.rcMonitor.top, mi.rcMonitor.right - mi.rcMonitor.left, mi.rcMonitor.bottom - mi.rcMonitor.top, SWP_NOZORDER | SWP_FRAMECHANGED);
+                    }
+                }
+                ShowCursor(FALSE);
+            }
+            else
+            {
+                //code
+                SetWindowLong(m_window, GWL_STYLE, m_windowStyle | WS_OVERLAPPEDWINDOW);
+                SetWindowPlacement(m_window, &m_wpPrev);
+                SetWindowPos(m_window, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_FRAMECHANGED);
+                ShowCursor(TRUE);
+            }
 
-        void Resize(unsigned long width, unsigned long height)
-        {
-            // TODO
+            m_isFullscreen = !m_isFullscreen;
         }
 
         void SwapBuffers() override

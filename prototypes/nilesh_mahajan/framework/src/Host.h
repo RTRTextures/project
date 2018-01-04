@@ -22,6 +22,7 @@ namespace Framework
     protected:
         Window                      m_window;
         bool                        m_exitLoop;
+        bool                        m_isActive;
                         Host();
         virtual         ~Host();
 

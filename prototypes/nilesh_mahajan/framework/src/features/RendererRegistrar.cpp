@@ -18,6 +18,7 @@ namespace Features
         static std::list<RendererState> renderers;
         INIT_RENDERER_MAP(renderers)
             REGISTER_RENDERER(TestRenderer)
+            REGISTER_RENDERER(TestRenderer2)
             // register new renderer classes here
         END_RENDERER_MAP(renderers)
         return renderers;

@@ -1,5 +1,6 @@
 #include "Host.h"
 #include "RendererRegistrar.h"
+#include <glew.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -74,17 +75,26 @@ namespace Framework
         glEnable(GL_DEPTH_TEST);            // enable depth testing
         glDepthFunc(GL_LEQUAL);             // type of depth testing
 
-        for (auto rendererEntry = m_renderers.begin();
-            rendererEntry != m_renderers.end() && result != RENDERER_RESULT_ERROR;
-            ++rendererEntry)
+        // initialize generic extension-wranglers (GLEW)
+        if (GLEW_OK == glewInit())
         {
-            if (rendererEntry->GetLastResult() != RENDERER_RESULT_ERROR)
+            for (auto rendererEntry = m_renderers.begin();
+                rendererEntry != m_renderers.end() && result != RENDERER_RESULT_ERROR;
+                ++rendererEntry)
             {
-                rendererEntry->SetLastResult(rendererEntry->GetRenderer()->Initialize(window));
-                result = (rendererEntry->GetLastResult() == RENDERER_RESULT_SUCCESS) ?
-                    RENDERER_RESULT_SUCCESS : RENDERER_RESULT_ERROR;
+                if (rendererEntry->GetLastResult() != RENDERER_RESULT_ERROR)
+                {
+                    rendererEntry->SetLastResult(rendererEntry->GetRenderer()->Initialize(window));
+                    result = (rendererEntry->GetLastResult() == RENDERER_RESULT_SUCCESS) ?
+                        RENDERER_RESULT_SUCCESS : RENDERER_RESULT_ERROR;
+                }
             }
         }
+        else
+        {
+            result = RENDERER_RESULT_ERROR;
+        }
+
         return result;
     }
 

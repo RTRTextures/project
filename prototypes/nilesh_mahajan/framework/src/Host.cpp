@@ -69,15 +69,15 @@ namespace Framework
     {
         RendererResult result = RENDERER_RESULT_SUCCESS;
 
-        // do global initializations
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClearDepth(1.0f);                 // set depth buffer
-        glEnable(GL_DEPTH_TEST);            // enable depth testing
-        glDepthFunc(GL_LEQUAL);             // type of depth testing
-
         // initialize generic extension-wranglers (GLEW)
         if (GLEW_OK == glewInit())
         {
+            // do global initializations
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            glClearDepth(1.0f);                 // set depth buffer
+            glEnable(GL_DEPTH_TEST);            // enable depth testing
+            glDepthFunc(GL_LEQUAL);             // type of depth testing
+
             for (auto rendererEntry = m_renderers.begin();
                 rendererEntry != m_renderers.end() && result != RENDERER_RESULT_ERROR;
                 ++rendererEntry)

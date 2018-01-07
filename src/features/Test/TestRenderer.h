@@ -2,6 +2,7 @@
 
 #include <Renderer.h>
 #include <gl\GL.h>
+#include <gl\GLU.h>
 
 namespace Features
 {
@@ -72,6 +73,9 @@ namespace Features
             // render 1000 frames before transitioning to next scene
             if (params.scene == SCENE_TYPE_TEST0 && --renderFrameCount > 0)
             {
+                glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
+
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
                 glTranslatef(0.0f, 0.0f, -6.0f);
@@ -136,6 +140,19 @@ namespace Features
         /// @param message OS dependent structure that describes the system message being processed.
         void OnMessage(const Message &message) override
         {
+        }
+
+        /// Generic method to notify active renderer about the change in the dimensions of the host window
+        /// @param width New width of the window
+        /// @param height New height of the window
+        void OnResize(unsigned int width, unsigned int height) override
+        {
+            // select projection matrix
+            glMatrixMode(GL_PROJECTION);
+            // reset projection matrix
+            glLoadIdentity();
+            // calculate the aspect ratio of the view
+            gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
         }
     };
 
@@ -204,6 +221,8 @@ namespace Features
             // render 1000 frames before transitioning to next scene
             if (params.scene == SCENE_TYPE_TEST0 && --renderFrameCount > 0)
             {
+                glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
                 glTranslatef(0.0f, 0.0f, -6.0f);
@@ -268,6 +287,19 @@ namespace Features
         /// @param message OS dependent structure that describes the system message being processed.
         void OnMessage(const Message &message) override
         {
+        }
+
+        /// Generic method to notify active renderer about the change in the dimensions of the host window
+        /// @param width New width of the window
+        /// @param height New height of the window
+        void OnResize(unsigned int width, unsigned int height) override
+        {
+            // select projection matrix
+            glMatrixMode(GL_PROJECTION);
+            // reset projection matrix
+            glLoadIdentity();
+            // calculate the aspect ratio of the view
+            gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
         }
     };
 
@@ -335,6 +367,8 @@ namespace Features
             // render for 5 secs before transitioning to next scene
             if (params.scene == SCENE_TYPE_TEST1 && params.elapsedFromSceneStart < 5 * 1000 * 1000)
             {
+                glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
                 glTranslatef(0.0f, 0.0f, -6.0f);
@@ -397,6 +431,19 @@ namespace Features
         /// @param message OS dependent structure that describes the system message being processed.
         void OnMessage(const Message &message) override
         {
+        }
+
+        /// Generic method to notify active renderer about the change in the dimensions of the host window
+        /// @param width New width of the window
+        /// @param height New height of the window
+        void OnResize(unsigned int width, unsigned int height) override
+        {
+            // select projection matrix
+            glMatrixMode(GL_PROJECTION);
+            // reset projection matrix
+            glLoadIdentity();
+            // calculate the aspect ratio of the view
+            gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
         }
     };
 

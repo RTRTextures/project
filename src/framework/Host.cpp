@@ -130,13 +130,7 @@ namespace Framework
             height = 1;
         }
         glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-
-        // select projection matrix
-        glMatrixMode(GL_PROJECTION);
-        // reset projection matrix
-        glLoadIdentity();
-        // calculate the aspect ratio of the view
-        gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+        m_currentRenderer->get()->OnResize(width, height);
     }
 
     RendererResult Host::InitializeScene()
@@ -165,8 +159,6 @@ namespace Framework
 
         // basic operations
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
 
         unsigned long long currentTs = SystemMicrosecsTimestamp();
         RenderParams params = {

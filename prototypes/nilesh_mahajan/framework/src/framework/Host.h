@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer_Static.h"
+#include "Renderer.h"
 #include "RendererRegistrar.h"
 
 namespace Framework
@@ -14,10 +14,13 @@ namespace Framework
     class Host
     {
     private:
-        SceneType                   m_current;
         unsigned long long          m_sceneStartTimestamp;
         unsigned long long          m_sceneFrameCounter;
-        std::list<RendererState>    &m_renderers;
+        unsigned long long          m_epicStartTimestamp;
+        unsigned long long          m_epicFrameCounter;
+        SceneToRenderersMap         &m_renderers;
+        SceneToRenderersMapIter     m_currentSceneType;
+        RendererStateIter           m_currentRenderer;
 
     protected:
         Window                      m_window;
@@ -38,9 +41,10 @@ namespace Framework
         RendererResult  Render();
         void            Uninitialize();
         RendererResult  SwitchScene();
+        bool            IsCurrentRendererValid() const;
 
     protected:
-        void            OnMessage(const Message* message);
+        void            OnMessage(const Message &message);
         void            Resize(unsigned long width, unsigned long height);
 
         // methods need to be implemented by the child class

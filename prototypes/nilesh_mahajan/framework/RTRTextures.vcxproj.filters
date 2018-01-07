@@ -16,36 +16,39 @@
     <Filter Include="src\features">
       <UniqueIdentifier>{b9bef402-02e2-4150-8d97-64f74b932eac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\framework">
+      <UniqueIdentifier>{5f190a96-ea7e-4031-9ba9-7a451fea677e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\features\Test">
+      <UniqueIdentifier>{46778d02-c2e5-4462-bc67-bf55bbe8efcc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Host.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\features\RendererRegistrar.h">
+      <Filter>src\features</Filter>
     </ClInclude>
     <ClInclude Include="common\include\Renderer.h">
       <Filter>common\include</Filter>
     </ClInclude>
-    <ClInclude Include="common\include\Renderer_Static.h">
-      <Filter>common\include</Filter>
+    <ClInclude Include="src\framework\Host.h">
+      <Filter>src\framework</Filter>
     </ClInclude>
-    <ClInclude Include="src\features\TestRenderer.h">
-      <Filter>src\features</Filter>
-    </ClInclude>
-    <ClInclude Include="src\features\RendererRegistrar.h">
-      <Filter>src\features</Filter>
+    <ClInclude Include="src\features\Test\TestRenderer.h">
+      <Filter>src\features\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Host.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\features\RendererRegistrar.cpp">
       <Filter>src\features</Filter>
     </ClCompile>
-    <ClCompile Include="src\WinFrameWorkUtil.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\framework\Host.cpp">
+      <Filter>src\framework</Filter>
     </ClCompile>
-    <ClCompile Include="src\WinHost.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\framework\WinFrameWorkUtil.cpp">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\framework\WinHost.cpp">
+      <Filter>src\framework</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

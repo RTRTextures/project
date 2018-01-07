@@ -45,7 +45,7 @@ namespace Framework
         void MessageHandler(UINT message, WPARAM wParam, LPARAM lParam)
         {
             Message messageStruct = { message, wParam, lParam };
-            OnMessage(&messageStruct);
+            OnMessage(messageStruct);
 
             switch (message)
             {

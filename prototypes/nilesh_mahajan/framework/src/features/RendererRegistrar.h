@@ -1,36 +1,21 @@
 #pragma once
 
-#include "Renderer_Static.h"
+#include "Renderer.h"
 #include <list>
 #include <memory>
+#include <map>
 
 namespace Features
 {
-    typedef std::shared_ptr<Interfaces::IRenderer> IRendererPtr;
     using namespace Interfaces;
 
-    class RendererState
-    {
-    private:
-        IRendererPtr            m_renderer;
-        SceneType               m_activeScene;
-        RendererResult          m_lastResult;
+    typedef std::shared_ptr<IRenderer> IRendererPtr;
+    typedef std::list<IRendererPtr> RenderersList;
+    typedef std::map<SceneType, RenderersList> SceneToRenderersMap;
 
-    public:
-        RendererState(IRendererPtr renderer) :
-            m_renderer(renderer),
-            m_lastResult(RENDERER_RESULT_SUCCESS),
-            m_activeScene(SCENE_TYPE_FIRST)
-        {
-        }
-
-        void            SetLastResult(RendererResult result) { m_lastResult = result; }
-        RendererResult  GetLastResult() const { return m_lastResult; }
-        void            SetActiveScene(SceneType scene) { m_activeScene = scene; }
-        SceneType       GetActiveScene() const { return m_activeScene; }
-        IRendererPtr    GetRenderer() { return m_renderer; }
-    };
+    typedef RenderersList::iterator RendererStateIter;
+    typedef SceneToRenderersMap::iterator SceneToRenderersMapIter;
 
     // returns global instance of renderer states
-    std::list<RendererState>& GetRenderers();
+    SceneToRenderersMap& GetRenderers();
 }

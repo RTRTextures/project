@@ -20,16 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\include\Renderer.h" />
-    <ClInclude Include="common\include\Renderer_Static.h" />
     <ClInclude Include="src\features\RendererRegistrar.h" />
-    <ClInclude Include="src\features\TestRenderer.h" />
-    <ClInclude Include="src\Host.h" />
+    <ClInclude Include="src\features\Test\TestRenderer.h" />
+    <ClInclude Include="src\framework\Host.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\features\RendererRegistrar.cpp" />
-    <ClCompile Include="src\WinFrameWorkUtil.cpp" />
-    <ClCompile Include="src\Host.cpp" />
-    <ClCompile Include="src\WinHost.cpp" />
+    <ClCompile Include="src\framework\Host.cpp" />
+    <ClCompile Include="src\framework\WinFrameWorkUtil.cpp" />
+    <ClCompile Include="src\framework\WinHost.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D616B408-0BDC-4094-BA93-0FC1D23418F7}</ProjectGuid>

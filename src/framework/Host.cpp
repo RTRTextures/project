@@ -2,7 +2,6 @@
 #include "RendererRegistrar.h"
 #include <glew.h>
 #include <gl/GL.h>
-#include <gl/GLU.h>
 
 namespace Framework
 {
@@ -17,7 +16,9 @@ namespace Framework
         m_window(NULL),
         m_exitLoop(false),
         m_isActive(true),
-        m_currentSceneType(m_renderers.end())
+        m_currentSceneType(m_renderers.end()),
+        m_winWidth(WIN_WIDTH),
+        m_winHeight(WIN_HEIGHT)
     {
     }
 
@@ -32,7 +33,6 @@ namespace Framework
             {
                 if (Initialize(m_window) == RENDERER_RESULT_SUCCESS)
                 {
-                    Resize(WIN_WIDTH, WIN_HEIGHT);
                     // execute renderers
                     if (IsCurrentRendererValid() && RENDERER_RESULT_SUCCESS == InitializeScene())
                     {
@@ -129,6 +129,11 @@ namespace Framework
         {
             height = 1;
         }
+
+        // store these values
+        m_winWidth = width;
+        m_winHeight = height;
+
         glViewport(0, 0, (GLsizei)width, (GLsizei)height);
         m_currentRenderer->get()->OnResize(width, height);
     }
@@ -149,6 +154,8 @@ namespace Framework
                 m_epicStartTimestamp = SystemMicrosecsTimestamp();
                 m_epicFrameCounter = 0;
             }
+
+            m_currentRenderer->get()->OnResize(m_winWidth, m_winHeight);
         }
         return result;
     }

@@ -2,7 +2,6 @@
 #include "RendererRegistrar.h"
 #include <glew.h>
 #include <gl/GL.h>
-#include <gl/GLU.h>
 
 namespace Framework
 {
@@ -17,7 +16,9 @@ namespace Framework
         m_window(NULL),
         m_exitLoop(false),
         m_isActive(true),
-        m_currentSceneType(m_renderers.end())
+        m_currentSceneType(m_renderers.end()),
+        m_winWidth(WIN_WIDTH),
+        m_winHeight(WIN_HEIGHT)
     {
     }
 
@@ -32,7 +33,6 @@ namespace Framework
             {
                 if (Initialize(m_window) == RENDERER_RESULT_SUCCESS)
                 {
-                    Resize(WIN_WIDTH, WIN_HEIGHT);
                     // execute renderers
                     if (IsCurrentRendererValid() && RENDERER_RESULT_SUCCESS == InitializeScene())
                     {
@@ -129,14 +129,13 @@ namespace Framework
         {
             height = 1;
         }
-        glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 
-        // select projection matrix
-        glMatrixMode(GL_PROJECTION);
-        // reset projection matrix
-        glLoadIdentity();
-        // calculate the aspect ratio of the view
-        gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+        // store these values
+        m_winWidth = width;
+        m_winHeight = height;
+
+        glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+        m_currentRenderer->get()->OnResize(width, height);
     }
 
     RendererResult Host::InitializeScene()
@@ -155,6 +154,8 @@ namespace Framework
                 m_epicStartTimestamp = SystemMicrosecsTimestamp();
                 m_epicFrameCounter = 0;
             }
+
+            m_currentRenderer->get()->OnResize(m_winWidth, m_winHeight);
         }
         return result;
     }
@@ -165,8 +166,6 @@ namespace Framework
 
         // basic operations
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
 
         unsigned long long currentTs = SystemMicrosecsTimestamp();
         RenderParams params = {

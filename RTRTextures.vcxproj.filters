@@ -7,9 +7,6 @@
     <Filter Include="common\include">
       <UniqueIdentifier>{449a890a-1463-48b4-bba1-83d936cb2212}</UniqueIdentifier>
     </Filter>
-    <Filter Include="common\src">
-      <UniqueIdentifier>{cae27f40-a121-424a-9bae-66334bfb9567}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{b8728f8d-4590-43b1-97e7-24a8acda963d}</UniqueIdentifier>
     </Filter>
@@ -21,6 +18,9 @@
     </Filter>
     <Filter Include="src\features\Test">
       <UniqueIdentifier>{46778d02-c2e5-4462-bc67-bf55bbe8efcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\src">
+      <UniqueIdentifier>{cae27f40-a121-424a-9bae-66334bfb9567}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

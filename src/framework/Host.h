@@ -21,6 +21,8 @@ namespace Framework
         SceneToRenderersMap         &m_renderers;
         SceneToRenderersMapIter     m_currentSceneType;
         RendererStateIter           m_currentRenderer;
+        unsigned int                m_winWidth;
+        unsigned int                m_winHeight;
 
     protected:
         Window                      m_window;

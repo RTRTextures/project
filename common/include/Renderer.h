@@ -108,6 +108,11 @@ namespace Interfaces
         /// from system or initiated by the host itself.
         /// @param message OS dependent structure that describes the system message being processed.
         virtual void OnMessage(const Message &message) = 0;
+
+        /// Generic method to notify active renderer about the change in the dimensions of the host window
+        /// @param width New width of the window
+        /// @param height New height of the window
+        virtual void OnResize(unsigned int width, unsigned int height) = 0;
     };
 
 } // Interfaces

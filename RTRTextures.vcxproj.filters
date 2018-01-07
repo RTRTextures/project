@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{3761e710-4ba4-47a2-a197-66709404b4a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\include">
+      <UniqueIdentifier>{449a890a-1463-48b4-bba1-83d936cb2212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{b8728f8d-4590-43b1-97e7-24a8acda963d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\features">
+      <UniqueIdentifier>{b9bef402-02e2-4150-8d97-64f74b932eac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\framework">
+      <UniqueIdentifier>{5f190a96-ea7e-4031-9ba9-7a451fea677e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\features\Test">
+      <UniqueIdentifier>{46778d02-c2e5-4462-bc67-bf55bbe8efcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\src">
+      <UniqueIdentifier>{cae27f40-a121-424a-9bae-66334bfb9567}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\features\RendererRegistrar.h">
+      <Filter>src\features</Filter>
+    </ClInclude>
+    <ClInclude Include="common\include\Renderer.h">
+      <Filter>common\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\framework\Host.h">
+      <Filter>src\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\Test\TestRenderer.h">
+      <Filter>src\features\Test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\features\RendererRegistrar.cpp">
+      <Filter>src\features</Filter>
+    </ClCompile>
+    <ClCompile Include="src\framework\Host.cpp">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\framework\WinFrameWorkUtil.cpp">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\framework\WinHost.cpp">
+      <Filter>src\framework</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

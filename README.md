@@ -1,41 +1,31 @@
-# Project
+# **RTR Textures Project**
 Repository for hosting RTR2017 Final Project
 
-The project structure is as follows -
+Idea can be found [here](https://docs.google.com/document/d/1upf7tDbqfl3QZoaCxFFnFiGu49uX4hOHmkiuX2KfyOI/edit?usp=sharing).
 
+### Project Structure
+
+```
 Root
-
-+++ build                               // contains files required for building the solution. e.g. configuration files etc.
-
-+++ common                              // contains files shared throughout the project. This can further include the headers and sources.
-
-        +++ include
-    
-        +++ src
-    
-+++ doc                                 // contains project documentation including design, flow of events etc.
-
-+++ prototypes                          // folder containing prototypes created for various approaches grouped by contributions per user
-
-        +++ (username)                         
-    
-+++ (username1)                         // contains headers and sources contribution from respective users. 
-
-        +++ custom folder structure
-    
-+++ (username2)
-
-+++
-
+|-- build                    // contains files required for building the solution. e.g. configuration files etc.
+|-- common                   // contains files shared throughout the project. This can further include the headers and sources.
+    |-- include		     // contains headers
+    |-- src		     // contains sources
+|-- doc                      // contains project documentation including design, flow of events etc.
+|-- prototypes               // folder containing prototypes created for various approaches grouped by contributions per user
+    |-- (username)
+|-- src		             // folder containing main project source code
+    |-- features    	     // contains set of features plugged in the framework for drawing
+	|-- Test  	     // contains sources for test feature
+	|-- (feature)        // some feature
+    |-- framework	     // contains framework headers and sources                         
+|-- tools		     // folder containing tools required to build the project
+|-- x64			     // 64-bit distribution
+|-- RTRTextures.sln		 // main solution file for this project
+|-- RTRTextures.vcxproj		 // main project file created in VS2015
+|-- RTRTextures.vcxproj.filters  // contains internal project structure for .vcxproj file
+|-- README.md			 // contains information about this repository
+|-- .gitignore			 // contains git file filters
 .
-
 .
-
-interfaceregistrar.h                    // main header containing registered classes in order to be included from the top level project file.
-
-main.cpp                                // main project makefile
-
-makefile.txt                            // project makefile
-
-
-?? anything else?
+```

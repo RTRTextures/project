@@ -1,32 +1,16 @@
-# Prerequisites
-*.d
+# ignore visual studio files
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+**.vs/
+**.db
+**.opendb
 
-# Precompiled Headers
-*.gch
-*.pch
+**/Debug/*
+!**/Debug/*.exe
+!**/Debug/*.lib
+!**/Debug/*.dll
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+**/Release/*
+!**/Release/*.exe
+!**/Release/*.lib
+!**/Release/*.dll
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app

@@ -33,6 +33,17 @@ namespace Interfaces
         /// General initialization for all the scenes implemented by the component
         SCENE_TYPE_TEST0,
         SCENE_TYPE_TEST1,
+        SCENE_SOLAR_SYSTEM,  // This will be the main solar system scene
+        SCENE_NUCLEUS,
+        SCENE_ATOMS,
+        SCENE_CHEMICAL_BONDS,
+        SCENE_CONDUCTORS,
+        SCENE_SILICON,
+        SCENE_IMPURITY_DOPING,
+        SCENE_DIODE,
+        SCENE_TRIANSISTOR,
+        SCENE_GATES,
+        SCENE_CHIPS
     };
 
 #ifdef _WIN32

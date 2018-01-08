@@ -2,6 +2,7 @@
 #include <mutex>
 
 #include "Test/TestRenderer.h"
+#include"SolarSystem\SolarRender.h"
 
 namespace Features
 {
@@ -19,17 +20,23 @@ namespace Features
 
         static SceneToRenderersMap renderers;
         INIT_RENDERER_MAP(renderers)
+			
+#ifdef _TEST
+			BEGIN_SCENE_TYPE(SCENE_TYPE_TEST0)
+				REGISTER_RENDERER(TestRenderer)
+			REGISTER_RENDERER(TestRenderer1)
+			// other renderer?
+			END_SCENE_TYPE()
 
-            BEGIN_SCENE_TYPE(SCENE_TYPE_TEST0)
-                REGISTER_RENDERER(TestRenderer)
-                REGISTER_RENDERER(TestRenderer1)
-                // other renderer?
-            END_SCENE_TYPE()
-
-            BEGIN_SCENE_TYPE(SCENE_TYPE_TEST1)
-                REGISTER_RENDERER(TestRenderer2)
-                // other renderer?
-            END_SCENE_TYPE()
+			BEGIN_SCENE_TYPE(SCENE_TYPE_TEST1)
+				REGISTER_RENDERER(TestRenderer2)
+			// other renderer?
+			END_SCENE_TYPE()
+			
+#endif
+			BEGIN_SCENE_TYPE(SCENE_SOLAR_SYSTEM)
+				REGISTER_RENDERER(SolarSystemRenderer)
+			END_SCENE_TYPE()
 
             // register new renderer classes here
         END_RENDERER_MAP(renderers)

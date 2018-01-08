@@ -33,6 +33,7 @@ namespace Interfaces
         /// General initialization for all the scenes implemented by the component
         SCENE_TYPE_TEST0,
         SCENE_TYPE_TEST1,
+		SCENE_SOLAR_SYSTEM,
     };
 
 #ifdef _WIN32

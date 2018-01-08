@@ -22,6 +22,9 @@
     <Filter Include="common\src">
       <UniqueIdentifier>{cae27f40-a121-424a-9bae-66334bfb9567}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\features\solarsystem">
+      <UniqueIdentifier>{b1954e54-1175-461d-8e39-257c3d6b00b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\features\RendererRegistrar.h">
@@ -35,6 +38,15 @@
     </ClInclude>
     <ClInclude Include="src\features\Test\TestRenderer.h">
       <Filter>src\features\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarRender.h">
+      <Filter>src\features\solarsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\SolarSystem\resource.h">
+      <Filter>src\features\solarsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\SolarSystem\SolarResource.h">
+      <Filter>src\features\solarsystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -50,5 +62,10 @@
     <ClCompile Include="src\framework\WinHost.cpp">
       <Filter>src\framework</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\features\SolarSystem\SolarResource.rc">
+      <Filter>src\features\solarsystem</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

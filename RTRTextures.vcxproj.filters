@@ -39,13 +39,13 @@
     <ClInclude Include="src\features\Test\TestRenderer.h">
       <Filter>src\features\Test</Filter>
     </ClInclude>
-    <ClInclude Include="SolarRender.h">
-      <Filter>src\features\solarsystem</Filter>
-    </ClInclude>
     <ClInclude Include="src\features\SolarSystem\resource.h">
       <Filter>src\features\solarsystem</Filter>
     </ClInclude>
     <ClInclude Include="src\features\SolarSystem\SolarResource.h">
+      <Filter>src\features\solarsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\SolarSystem\SolarRender.h">
       <Filter>src\features\solarsystem</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,10 +62,8 @@
     <ClCompile Include="src\framework\WinHost.cpp">
       <Filter>src\framework</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="src\features\SolarSystem\SolarResource.rc">
+    <ClCompile Include="src\features\SolarSystem\SolarRender.cpp">
       <Filter>src\features\solarsystem</Filter>
-    </ResourceCompile>
+    </ClCompile>
   </ItemGroup>
 </Project>

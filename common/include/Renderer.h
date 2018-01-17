@@ -43,7 +43,7 @@ namespace Interfaces
         SCENE_DIODE,
         SCENE_TRIANSISTOR,
         SCENE_GATES,
-        SCENE_CHIPS,
+        SCENE_CHIPS
     };
 
 #ifdef _WIN32

@@ -21,11 +21,15 @@
   <ItemGroup>
     <ClInclude Include="common\include\Renderer.h" />
     <ClInclude Include="src\features\RendererRegistrar.h" />
+    <ClInclude Include="src\features\SolarSystem\resource.h" />
+    <ClInclude Include="src\features\SolarSystem\SolarRender.h" />
+    <ClInclude Include="src\features\SolarSystem\SolarResource.h" />
     <ClInclude Include="src\features\Test\TestRenderer.h" />
     <ClInclude Include="src\framework\Host.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\features\RendererRegistrar.cpp" />
+    <ClCompile Include="src\features\SolarSystem\SolarRender.cpp" />
     <ClCompile Include="src\framework\Host.cpp" />
     <ClCompile Include="src\framework\WinFrameWorkUtil.cpp" />
     <ClCompile Include="src\framework\WinHost.cpp" />

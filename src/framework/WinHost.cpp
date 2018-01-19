@@ -76,7 +76,7 @@ namespace Framework
                 }
                 break;
             case WM_DESTROY:
-                PostQuitMessage(0);
+                m_exitLoop = true;
                 break;
             }
         }

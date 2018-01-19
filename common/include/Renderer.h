@@ -71,6 +71,9 @@ namespace Interfaces
         unsigned long long frameIdFromSceneStart;
     };
 
+    /// macro to convert seconds to microseconds
+#define SECS_TO_MICROSECS(x)    ((x)*1000*1000)
+
     /// @brief interface to render
     class IRenderer
     {

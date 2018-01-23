@@ -3,7 +3,9 @@
 
 namespace VSIUtil
 {
-	void VSIUtilPlus::VSIUtilLoadMesh(char* filePath, MeshType meshType, SeparatorType separator)
+	void VSIUtilPlus::VSIUtilLoadMesh(char* filePath,
+		MeshType meshType,
+		SeparatorType separator)
 	{
 		std::vector<unsigned int> vertexIndices;
 		std::vector<unsigned int> normalIndices;
@@ -219,19 +221,23 @@ namespace VSIUtil
 			}
 		}
 
+		std::vector<glm::vec3>* vertices = VSIUtilGetVertices();
+		std::vector<glm::vec3>* normals = VSIUtilGetNormals();
+		std::vector<glm::vec2>* textureCoords = VSIUtilGetTexcoords();
+		
 		for (int i = 0; i < vertexIndices.size(); i++)
 		{
 			unsigned int vertexIndex = vertexIndices[i];
-			vertices.push_back(tempVertices[vertexIndex - 1]);
+			(*vertices).push_back(tempVertices[vertexIndex - 1]);
 			if (normalIndices.size() > 0)
 			{
 				unsigned int normalIndex = normalIndices[i];
-				normals.push_back(tempNormals[normalIndex - 1]);
+				(*normals).push_back(tempNormals[normalIndex - 1]);
 			}
 			if (textureIndices.size() > 0)
 			{
 				unsigned int textureIndex = textureIndices[i];
-				textureCoords.push_back(tempTextures[textureIndex - 1]);
+				(*textureCoords).push_back(tempTextures[textureIndex - 1]);
 			}
 		}
 

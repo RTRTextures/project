@@ -3,20 +3,27 @@
 #include <stdio.h>
 namespace VSIUtil
 {
-	void VSIUtilPlus::VSIUtilGenAndBindBuffer(GLuint buffer, GLuint attribLocation, BufferType bufferType)
+	void VSIUtilPlus::VSIUtilGenAndBindBuffer(GLuint buffer, 
+		GLuint attribLocation, 
+		BufferType bufferType)
 	{
+
+		std::vector<glm::vec3>* vertices = VSIUtilGetVertices();
+		std::vector<glm::vec3>* normals = VSIUtilGetNormals();
+		std::vector<glm::vec2>* textureCoords = VSIUtilGetTexcoords();
+
 		glGenBuffers(1, &buffer);
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		switch (bufferType)
 		{
 		case VERTEX:
-			glBufferData(GL_ARRAY_BUFFER, (vertices.size() * sizeof(glm::vec3)), &(vertices[0].x), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, (vertices->size() * sizeof(glm::vec3)), &((*vertices)[0].x), GL_STATIC_DRAW);
 			break;
 		case NORMALS:
-			glBufferData(GL_ARRAY_BUFFER, (normals.size() * sizeof(glm::vec3)), &(normals[0].x), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, (normals->size() * sizeof(glm::vec3)), &((*normals)[0].x), GL_STATIC_DRAW);
 			break;
 		case TEXTURECOORDS:
-			glBufferData(GL_ARRAY_BUFFER, (textureCoords.size() * sizeof(glm::vec2)), &(textureCoords[0].x), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, (textureCoords->size() * sizeof(glm::vec2)), &((*textureCoords)[0].x), GL_STATIC_DRAW);
 			break;
 		}
 		glEnableVertexAttribArray(attribLocation);

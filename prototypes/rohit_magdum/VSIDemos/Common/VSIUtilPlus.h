@@ -5,6 +5,7 @@
 #include <vector>
 #include <gl\GL.h>
 #include <gl\GLU.h>
+#include <vector>
 
 #ifdef VSIUTILPLUS_EXPORTS
 #define VSIUTILPLUS_API __declspec(dllexport)
@@ -48,9 +49,6 @@ namespace VSIUtil
 		GLuint mTexture[100];
 
 		glm::mat4 mProjMatrix;
-		std::vector<glm::vec3> vertices;
-		std::vector<glm::vec2> textureCoords;
-		std::vector<glm::vec3> normals;
 
 		enum BufferType
 		{
@@ -95,6 +93,9 @@ namespace VSIUtil
 		VSIUTILPLUS_API virtual int VSIUtilLoadShaders(char*, char*);
 		VSIUTILPLUS_API virtual int VSIUtilLoadTexture(char*);
 		VSIUTILPLUS_API virtual void VSIUtilGenAndBindBuffer(GLuint, GLuint, BufferType);
+		VSIUTILPLUS_API virtual std::vector<glm::vec3>* VSIUtilGetVertices() = 0;
+		VSIUTILPLUS_API virtual std::vector<glm::vec3>* VSIUtilGetNormals() = 0;
+		VSIUTILPLUS_API virtual std::vector<glm::vec2>* VSIUtilGetTexcoords() = 0;
 	};
 }
 

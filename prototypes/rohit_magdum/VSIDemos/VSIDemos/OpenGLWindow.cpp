@@ -15,6 +15,9 @@ public:
 	GLuint progObj;
 	GLuint cube_buffer[3];
 	GLuint vao;
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec2> texCoords;
 	
 	VSIDemo()
 	{
@@ -28,6 +31,21 @@ public:
 	{
 		WCHAR tempName[128] = TEXT("VSI Demo Window");
 		wcscpy_s(szAppName,wcslen(tempName) + 1, TEXT("VSI Demo Window"));
+	}
+
+	std::vector<glm::vec3>* VSIUtilGetVertices()
+	{
+		return &vertices;
+	}
+
+	std::vector<glm::vec3>* VSIUtilGetNormals()
+	{
+		return &normals;
+	}
+
+	std::vector<glm::vec2>* VSIUtilGetTexcoords()
+	{
+		return &texCoords;
 	}
 
 	void VSIUtilSceneInit()

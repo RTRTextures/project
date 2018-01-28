@@ -17,5 +17,5 @@ namespace Features
     typedef SceneToRenderersMap::iterator SceneToRenderersMapIter;
 
     // returns global instance of renderer states
-    SceneToRenderersMap& GetRenderers();
+	SceneToRenderersMap& GetRenderers();
 }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿git<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,17 +21,7 @@
   <ItemGroup>
     <ClInclude Include="common\include\Renderer.h" />
     <ClInclude Include="src\features\RendererRegistrar.h" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <ClInclude Include="src\features\SolarSystem\resource.h" />
     <ClInclude Include="src\features\SolarSystem\SolarRender.h" />
-    <ClInclude Include="src\features\SolarSystem\SolarResource.h" />
-=======
-    <ClInclude Include="src\features\SolarSystem\SolarRender.h" />
->>>>>>> 262f5631734c516bd6e17471498adc4118646d03
-=======
-    <ClInclude Include="src\features\SolarSystem\SolarRender.h" />
->>>>>>> bfa7d69bafc6d0e030340840a21794ac8b0a4fa9
     <ClInclude Include="src\features\Test\TestRenderer.h" />
     <ClInclude Include="src\framework\Host.h" />
   </ItemGroup>

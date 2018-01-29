@@ -39,12 +39,15 @@
     <ClInclude Include="src\features\Test\TestRenderer.h">
       <Filter>src\features\Test</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="src\features\SolarSystem\resource.h">
       <Filter>src\features\solarsystem</Filter>
     </ClInclude>
     <ClInclude Include="src\features\SolarSystem\SolarResource.h">
       <Filter>src\features\solarsystem</Filter>
     </ClInclude>
+=======
+>>>>>>> 262f5631734c516bd6e17471498adc4118646d03
     <ClInclude Include="src\features\SolarSystem\SolarRender.h">
       <Filter>src\features\solarsystem</Filter>
     </ClInclude>

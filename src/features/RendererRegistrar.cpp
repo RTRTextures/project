@@ -12,6 +12,7 @@ namespace Features
     SceneToRenderersMap& GetRenderers()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		// helper macros for constructing renderer list
 		#define INIT_RENDERER_MAP(renderer_map)   std::call_once(s_flag, [] (SceneToRenderersMap& map) { SceneType currentSceneType;
 		#define BEGIN_SCENE_TYPE(scene)           currentSceneType = (scene);
@@ -44,6 +45,15 @@ namespace Features
         #define REGISTER_RENDERER(renderer)       map[currentSceneType].push_back(IRendererPtr(new (renderer)));
         #define END_RENDERER_MAP(renderer_map)    }, (renderer_map));
 
+=======
+        // helper macros for constructing renderer list
+        #define INIT_RENDERER_MAP(renderer_map)   std::call_once(s_flag, [] (SceneToRenderersMap& map) { SceneType currentSceneType;
+        #define BEGIN_SCENE_TYPE(scene)           currentSceneType = (scene);
+        #define END_SCENE_TYPE()
+        #define REGISTER_RENDERER(renderer)       map[currentSceneType].push_back(IRendererPtr(new (renderer)));
+        #define END_RENDERER_MAP(renderer_map)    }, (renderer_map));
+
+>>>>>>> bfa7d69bafc6d0e030340840a21794ac8b0a4fa9
         static SceneToRenderersMap renderers;
         INIT_RENDERER_MAP(renderers)
 #ifdef _TEST
@@ -59,7 +69,10 @@ namespace Features
             // register new renderer classes here, like Solar system added above.
         END_RENDERER_MAP(renderers)
         return renderers;
+<<<<<<< HEAD
 >>>>>>> 262f5631734c516bd6e17471498adc4118646d03
+=======
+>>>>>>> bfa7d69bafc6d0e030340840a21794ac8b0a4fa9
     }
 
 }

@@ -39,18 +39,6 @@
     <ClInclude Include="src\features\Test\TestRenderer.h">
       <Filter>src\features\Test</Filter>
     </ClInclude>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <ClInclude Include="src\features\SolarSystem\resource.h">
-      <Filter>src\features\solarsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="src\features\SolarSystem\SolarResource.h">
-      <Filter>src\features\solarsystem</Filter>
-    </ClInclude>
-=======
->>>>>>> 262f5631734c516bd6e17471498adc4118646d03
-=======
->>>>>>> bfa7d69bafc6d0e030340840a21794ac8b0a4fa9
     <ClInclude Include="src\features\SolarSystem\SolarRender.h">
       <Filter>src\features\solarsystem</Filter>
     </ClInclude>

@@ -31,6 +31,9 @@
     <ClCompile Include="src\framework\Host.cpp" />
     <ClCompile Include="src\framework\WinFrameWorkUtil.cpp" />
     <ClCompile Include="src\framework\WinHost.cpp" />
+    <ClCompile Include="src\framework\XHost.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D616B408-0BDC-4094-BA93-0FC1D23418F7}</ProjectGuid>

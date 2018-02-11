@@ -169,6 +169,7 @@ namespace Framework
             return ret;
         }
 
+		
         void UninitGL() override
         {
             if (m_hrc != NULL)

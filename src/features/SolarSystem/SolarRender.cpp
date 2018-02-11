@@ -83,10 +83,8 @@ RendererResult SolarSystemRenderer::Initialize(Window window)
 
 void SolarSystemRenderer::Uninitialize(void)
 {
-
-    glDeleteTextures(_countof(gbTexture), gbTexture);
+	glDeleteTextures(_countof(gbTexture), gbTexture);
     memset(gbTexture, 0, sizeof(gbTexture));
-
 }
 
 RendererResult SolarSystemRenderer::InitializeScene(SceneType scene)
@@ -226,6 +224,7 @@ void SolarSystemRenderer::neptune()
         gluQuadricTexture(pQuadric[7], 1);
         gluSphere(pQuadric[7], 0.75f, 100, 100);
     glPopMatrix();
+
 }
 void SolarSystemRenderer::sun()
 {
@@ -240,6 +239,7 @@ void SolarSystemRenderer::sun()
         gluQuadricTexture(pQuadric[8], 1);
         gluSphere(pQuadric[8], 0.75f, 100, 100);
     glPopMatrix();
+
 }
 void SolarSystemRenderer::stars()
 {

@@ -59,5 +59,8 @@
     <ClCompile Include="src\features\SolarSystem\SolarRender.cpp">
       <Filter>src\features\solarsystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\framework\XHost.cpp">
+      <Filter>src\framework</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 
+
 #include<iostream>
 #include<stdio.h>
 #include<stdlib.h>
@@ -9,12 +10,14 @@
 #include<X11/keysym.h>
 #include<GL/glew.h>
 #include<GL/gl.h>
-#include<gl/glx.h>
+#include<GL/glx.h>
 #include "Host.h"
 
 namespace Framework
 {
+	
 	typedef 	GLXContext(*glXCreateContextAttribsARBProc)(Display *, GLXFBConfig, GLXContext, Bool, const int *);
+
 
 	class XWindowsHost : public Host
 	{
@@ -27,6 +30,7 @@ namespace Framework
 		GLXContext 						m_hGLXContext;
 		bool    m_isFullscreen;
 		long   m_windowStyle;
+
 	
 
 	public:
@@ -53,7 +57,7 @@ namespace Framework
 		{
 			Atom  wm_state;
 			Atom  fullscreen;
-			XEvent  exv = { 0 };
+			XEvent  xev = { 0 };
 
 			wm_state = XInternAtom(m_pDisplay, "_NET_WM_STATE", False);
 			memset(&xev, 0, sizeof(xev));
@@ -154,7 +158,7 @@ namespace Framework
 			winAttribs.border_pixel = 0;
 			winAttribs.background_pixmap = 0;
 			winAttribs.colormap = XCreateColormap(
-													m_ppDisplay,
+													m_pDisplay,
 													RootWindow(m_pDisplay, m_pXVisualInfo->screen), // you can give defaultScreen as well
 													m_pXVisualInfo->visual,
 													AllocNone
@@ -276,9 +280,7 @@ namespace Framework
 		{
 			bool messagefetched = false;
 			XEvent event;
-			Keysym keysym;
-			unsigned long width;
-			unsinged long height;
+			KeySym keysym;
 			while (XPending(m_pDisplay))
 			{
 				XNextEvent(m_pDisplay, &event);
@@ -288,7 +290,7 @@ namespace Framework
 					m_isActive = true;
 					break;
 				case KeyPress:
-					keysym = XkbKeycodeToKeysym(m_pDisplay, event.xkey.keycode, 0, 0, );
+					keysym = XkbKeycodeToKeysym(m_pDisplay, event.xkey.keycode, 0, 0);
 					switch (keysym)
 					{
 					case XK_Escape:
@@ -313,9 +315,7 @@ namespace Framework
 				case MotionNotify:
 					break;
 				case ConfigureNotify:
-					width = event.xconfigure.width;
-					height = event.xconfigure.height;
-					Resize((unsigned long)width, (unsigned long)height);
+					Resize((unsigned long)event.xconfigure.width, (unsigned long)event.xconfigure.height);
 					break;
 				case Expose:
 					break;
@@ -341,5 +341,6 @@ using namespace Framework;
 int main(int argc, char* argv[])
 {
 	XWindowsHost host;
-	return host.Run() ? 0 : -1;
+	bool bResult = host.Run();
+	return 1;
 }

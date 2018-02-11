@@ -1,0 +1,3 @@
+/home/guru/Desktop/git/project/_build/CMakeFiles/rebuild_cache.dir
+/home/guru/Desktop/git/project/_build/CMakeFiles/edit_cache.dir
+/home/guru/Desktop/git/project/_build/CMakeFiles/RTRTextures.dir

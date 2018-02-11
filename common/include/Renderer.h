@@ -2,12 +2,25 @@
 /// @brief Defines the interface between OpenGL generic host process and its pluggable 'Renderer' clients
 ///        Host: Framework OpenGL host process which will load multiple renderers for rendering a scene
 ///        Renderer: Implementer of the scene container in its class
+#pragma once
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
+/*
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+#include<memory.h>
+*/
+#ifdef linux
+#include<X11/Xlib.h>
+#include<X11/Xutil.h>
+#include<X11/XKBlib.h>
+#include<X11/keysym.h>
+#endif
 
-#pragma once
+
 
 namespace Interfaces
 {
@@ -55,7 +68,9 @@ namespace Interfaces
     };
     #define Window HWND
 #endif
-
+#ifdef linux
+    typedef long Message;
+#endif
     /// Parameters passed to a scene
     struct RenderParams
     {

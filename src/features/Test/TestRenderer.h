@@ -1,8 +1,16 @@
 #pragma once
 
 #include <Renderer.h>
+
+#ifdef _WIN32
 #include <gl\GL.h>
 #include <gl\GLU.h>
+#endif
+
+#ifdef linux
+    #include<GL/gl.h>
+    #include <GL/glu.h>
+#endif
 
 namespace Features
 {

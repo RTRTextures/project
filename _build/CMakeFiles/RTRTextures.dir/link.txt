@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/RTRTextures.dir/src/framework/XHost.cpp.o CMakeFiles/RTRTextures.dir/src/framework/Host.cpp.o CMakeFiles/RTRTextures.dir/src/features/RendererRegistrar.cpp.o CMakeFiles/RTRTextures.dir/src/features/SolarSystem/SolarRender.cpp.o CMakeFiles/RTRTextures.dir/src/framework/WinFrameWorkUtil.cpp.o  -o RTRTextures -L/usr/lib -lGLEW -lGL -lSOIL -lX11 

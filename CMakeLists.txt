@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 2.8)
+project(RTRTextures)
+set (CMAKE_CXX_STANDARD 11)
+include_directories(common/include/ src/features/ )
+add_executable(RTRTextures "src/framework/XHost.cpp" "src/framework/Host.cpp" "src/features/RendererRegistrar.cpp" "src/features/SolarSystem/SolarRender.cpp" "src/framework/WinFrameWorkUtil.cpp")
+target_link_libraries(RTRTextures PUBLIC -L/usr/lib)
+target_link_libraries(RTRTextures PUBLIC -lGLEW)
+target_link_libraries(RTRTextures PUBLIC -lGL)
+target_link_libraries(RTRTextures PUBLIC -lSOIL)
+target_link_libraries(RTRTextures PUBLIC -lX11)
+

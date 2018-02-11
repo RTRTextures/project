@@ -1,13 +1,11 @@
 #include "Host.h"
 #include "RendererRegistrar.h"
-#include <glew.h>
-#include <gl/GL.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 namespace Framework
 {
-    unsigned long long SystemMicrosecsTimestamp();
-
-    Host::Host() :
+        Host::Host() :
         m_sceneStartTimestamp(0ll),
         m_sceneFrameCounter(0ll),
         m_epicStartTimestamp(0ll),
@@ -68,6 +66,8 @@ namespace Framework
     Host::~Host()
     {
     }
+    unsigned long long SystemMicrosecsTimestamp();
+
 
     RendererResult Host::Initialize(Window window)
     {

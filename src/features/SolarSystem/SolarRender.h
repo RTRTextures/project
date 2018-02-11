@@ -1,8 +1,12 @@
 #pragma once
 
 #include <Renderer.h>
-#include <gl\GL.h>
-#include <gl\GLU.h>
+
+#ifdef linux
+    #include<GL/gl.h>
+    #include <GL/glu.h>
+#endif
+
 namespace Features
 {
     using namespace Interfaces;

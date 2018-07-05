@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{bece5a46-b5e9-4b50-92b5-bf97e6561a21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Framework\OGLProgram.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\SolarBody.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Loader.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\SolarSystem.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Camera.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\OGLProgram.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\SolarBody.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Loader.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\SolarSystem.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Camera.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\fEarth.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\vEarth.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

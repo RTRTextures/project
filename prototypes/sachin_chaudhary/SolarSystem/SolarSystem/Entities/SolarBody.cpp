@@ -1,34 +1,34 @@
 #include "SolarBody.h"
 #include "..\Framework\Loader.h"
 
-//GLuint SolarBody::m_vertexBuffer = 0;
-//GLuint SolarBody::m_normalBuffer = 0;
-//GLuint SolarBody::m_textureBuffer = 0;
-//GLuint SolarBody::m_tangentBuffer = 0;
-//GLuint SolarBody::m_vao = 0;
-//
-//bool SolarBody::m_isInitialized;
+GLuint SolarBody::m_vertexBuffer = 0;
+GLuint SolarBody::m_normalBuffer = 0;
+GLuint SolarBody::m_textureBuffer = 0;
+GLuint SolarBody::m_tangentBuffer = 0;
+GLuint SolarBody::m_vao = 0;
+
+size_t SolarBody::m_count = 0;
+bool SolarBody::m_isInitialized;
 
 //-------------------------------------------------------------------------------------------------------
-SolarBody::SolarBody()
+SolarBody::SolarBody(const SolarData& data)
 {
-   m_scale = 0.0f;
-   m_rotateSpeed = m_revolveSpeed = m_revolveRadius = 0.0f;
+   m_scale = data.scale;
+   m_rotateSpeed = data.rotation_speed;
+   m_revolveSpeed = data.revolution_speed;
+   m_revolveRadius = data.revolution_radius;
+
+   SetTexture(data.texture_file, data.textureUnit, data.mipmap);
+
+   // assume anti-clockwise rotations (at least for now)
    m_rotateAngle = m_revolveAngle = 360.0f;
 }
 
 //-------------------------------------------------------------------------------------------------------
 SolarBody::~SolarBody()
 {
-   glBindVertexArray(0);
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-   glDeleteVertexArrays(1, &m_vao);
-
-   glDeleteBuffers(1, &m_vertexBuffer);
-   glDeleteBuffers(1, &m_normalBuffer);
-   glDeleteBuffers(1, &m_textureBuffer);
-   glDeleteBuffers(1, &m_tangentBuffer);
+   for(unsigned int i = 0; i < m_satellites.size(); i++)
+      delete m_satellites[i];
 
    for(unsigned int i = 0; i < m_textures.size(); i++)
       glDeleteTextures(1, &m_textures[i].textureId);
@@ -41,7 +41,6 @@ bool SolarBody::Initialize()
       return true;
 
    MeshData mdata;
-
    if(!Loader::LoadMesh("res/meshes/solarbody.obj", mdata, true))
       return false;
 
@@ -86,7 +85,7 @@ bool SolarBody::Initialize()
    glBindVertexArray(0);
 
 
-   m_isInitialized=  m_vertexBuffer != 0 &&
+   m_isInitialized = m_vertexBuffer != 0 &&
       m_normalBuffer != 0 &&
       m_textureBuffer != 0 &&
       m_tangentBuffer != 0;
@@ -95,21 +94,45 @@ bool SolarBody::Initialize()
 }
 
 //-------------------------------------------------------------------------------------------------------
-void SolarBody::Render()
+void SolarBody::Uninitialize()
 {
-   glBindVertexArray(m_vao);
-   glDrawArrays(GL_TRIANGLES, 0, (GLsizei) m_count);
    glBindVertexArray(0);
+   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-   // scale
-   m_modelMatrix = glm::scale(vec3(m_scale));
+   glDeleteVertexArrays(1, &m_vao);
+
+   glDeleteBuffers(1, &m_vertexBuffer);
+   glDeleteBuffers(1, &m_normalBuffer);
+   glDeleteBuffers(1, &m_textureBuffer);
+   glDeleteBuffers(1, &m_tangentBuffer);
+
+   m_vertexBuffer = m_normalBuffer = m_textureBuffer = m_tangentBuffer = m_vao = 0;
+   m_count = 0;
+   m_isInitialized = false;
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+void SolarBody::Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix, const mat4& offsetMatrix)
+{
+   static GLint uniformMvp = program.GetUniformLocation("mvp");
+   static GLint uniformSampler = program.GetUniformLocation("sampler");
+
+   static mat4 mvp;
+
+   m_modelMatrix = offsetMatrix;
 
    // do revolutions using translations; revolutions are in the x-z plane
-   if(m_revolveSpeed > 0 && m_revolveRadius > 0) {
-
+   if(m_revolveRadius > 0) {
       m_modelMatrix = glm::translate(m_modelMatrix, vec3(m_revolveRadius * glm::cos(glm::radians(m_revolveAngle)),
                                                          0.0f,
                                                          m_revolveRadius * glm::sin(glm::radians(m_revolveAngle))));
+
+      // render all the satellites: this will be recursive
+      for(unsigned int i = 0; i < m_satellites.size(); i++)
+         m_satellites[i]->Render(program, projectionMatrix, viewMatrix, glm::translate(vec3(m_revolveRadius * glm::cos(glm::radians(m_revolveAngle)),
+                                                                                            0.0f,
+                                                                                            m_revolveRadius * glm::sin(glm::radians(m_revolveAngle)))));
+
       m_revolveAngle -= m_revolveSpeed;
 
       if(m_revolveAngle <= 0.0f)
@@ -124,25 +147,17 @@ void SolarBody::Render()
       if(m_rotateAngle <= 0.0f)
          m_rotateAngle = 360.0f;
    }
-}
 
-//-------------------------------------------------------------------------------------------------------
-void SolarBody::Scale(float scale)
-{
-   m_scale = scale;
-}
+   m_modelMatrix = glm::scale(m_modelMatrix, vec3(m_scale));
 
-//-------------------------------------------------------------------------------------------------------
-void SolarBody::Rotate(float speed)
-{
-   m_rotateSpeed = speed;
-}
+   mvp = projectionMatrix * viewMatrix * m_modelMatrix;
+   glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, &mvp[0][0]);
+   glUniform1i(uniformSampler, m_diffuseTextureId);
 
-//-------------------------------------------------------------------------------------------------------
-void SolarBody::Revolve(float radius, float speed)
-{
-   m_revolveRadius = radius;
-   m_revolveSpeed = speed;
+   // render the solar body
+   glBindVertexArray(m_vao);
+   glDrawArrays(GL_TRIANGLES, 0, (GLsizei) m_count);
+   glBindVertexArray(0);
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -153,8 +168,8 @@ const mat4& SolarBody::GetModelMatrix()
 
 //-------------------------------------------------------------------------------------------------------
 void SolarBody::SetTexture(const string& textureFile,
-                                   GLenum activeTextureUnit,
-                                   bool mipmaps)
+                           GLenum activeTextureUnit,
+                           bool mipmaps)
 {
    m_diffuseTextureId = -1;
    if(textureFile == "")
@@ -174,4 +189,13 @@ void SolarBody::SetTexture(const string& textureFile,
 unsigned int SolarBody::GetDiffuseTextureId()
 {
    return m_diffuseTextureId;
+}
+
+//-------------------------------------------------------------------------------------------------------
+bool SolarBody::AddSatellite(const SolarData& data)
+{
+   SolarBody* satellite = new SolarBody(data);
+   m_satellites.push_back(satellite);
+
+   return true;
 }

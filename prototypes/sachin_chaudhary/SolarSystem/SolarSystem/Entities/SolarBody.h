@@ -14,31 +14,46 @@ using namespace std;
 
 class SolarBody
 {
-public:
 
+private:
    typedef struct
    {
       GLuint textureId;
       GLenum textureUnit;
    } Texture;
 
-   SolarBody();
+public:
+
+   typedef struct
+   {
+      float scale;
+      float rotation_speed;
+      float revolution_radius;
+      float revolution_speed;
+
+      string texture_file;
+      GLenum textureUnit;
+      bool mipmap;
+   } SolarData;
+
+   SolarBody(const SolarData& data);
    ~SolarBody();
 
-   bool Initialize();
-
-   void Scale(float scale);
-   void Rotate(float speed);
-   void Revolve(float radius, float speed);
+   static bool Initialize();
+   static void Uninitialize();
 
    const mat4& GetModelMatrix();
    void SetTexture(const string& textureFile, GLenum activeTextureUnit, bool mipmaps);
    unsigned int GetDiffuseTextureId();
-   virtual void Render();
+
+   bool AddSatellite(const SolarData& data);
+
+   void Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix, const mat4& offsetMatrix = mat4());
 
 private:
-   GLuint m_vertexBuffer, m_normalBuffer, m_textureBuffer, m_tangentBuffer, m_vao;
-   bool m_isInitialized;
+   static GLuint m_vertexBuffer, m_normalBuffer, m_textureBuffer, m_tangentBuffer, m_vao;
+   static bool m_isInitialized;
+   static size_t m_count;
 
    unsigned int m_diffuseTextureId;
    
@@ -46,8 +61,8 @@ private:
    float m_rotateSpeed, m_rotateAngle;
    float m_revolveSpeed, m_revolveAngle, m_revolveRadius;
 
-   size_t m_count;
-   
    vector<Texture> m_textures;
    mat4 m_modelMatrix;
+
+   vector<SolarBody*> m_satellites;
 };

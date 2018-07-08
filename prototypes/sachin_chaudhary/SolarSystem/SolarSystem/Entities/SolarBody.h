@@ -25,7 +25,8 @@ public:
    SolarBody();
    ~SolarBody();
 
-   bool Initialize();
+   static bool Initialize();
+   static void Uninitialize();
 
    void Scale(float scale);
    void Rotate(float speed);
@@ -37,8 +38,9 @@ public:
    virtual void Render();
 
 private:
-   GLuint m_vertexBuffer, m_normalBuffer, m_textureBuffer, m_tangentBuffer, m_vao;
-   bool m_isInitialized;
+   static GLuint m_vertexBuffer, m_normalBuffer, m_textureBuffer, m_tangentBuffer, m_vao;
+   static bool m_isInitialized;
+   static size_t m_count;
 
    unsigned int m_diffuseTextureId;
    
@@ -46,8 +48,7 @@ private:
    float m_rotateSpeed, m_rotateAngle;
    float m_revolveSpeed, m_revolveAngle, m_revolveRadius;
 
-   size_t m_count;
-   
+  
    vector<Texture> m_textures;
    mat4 m_modelMatrix;
 };

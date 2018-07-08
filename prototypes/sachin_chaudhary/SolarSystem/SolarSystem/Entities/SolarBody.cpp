@@ -1,13 +1,14 @@
 #include "SolarBody.h"
 #include "..\Framework\Loader.h"
 
-//GLuint SolarBody::m_vertexBuffer = 0;
-//GLuint SolarBody::m_normalBuffer = 0;
-//GLuint SolarBody::m_textureBuffer = 0;
-//GLuint SolarBody::m_tangentBuffer = 0;
-//GLuint SolarBody::m_vao = 0;
-//
-//bool SolarBody::m_isInitialized;
+GLuint SolarBody::m_vertexBuffer = 0;
+GLuint SolarBody::m_normalBuffer = 0;
+GLuint SolarBody::m_textureBuffer = 0;
+GLuint SolarBody::m_tangentBuffer = 0;
+GLuint SolarBody::m_vao = 0;
+
+size_t SolarBody::m_count = 0;
+bool SolarBody::m_isInitialized;
 
 //-------------------------------------------------------------------------------------------------------
 SolarBody::SolarBody()
@@ -20,16 +21,6 @@ SolarBody::SolarBody()
 //-------------------------------------------------------------------------------------------------------
 SolarBody::~SolarBody()
 {
-   glBindVertexArray(0);
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-   glDeleteVertexArrays(1, &m_vao);
-
-   glDeleteBuffers(1, &m_vertexBuffer);
-   glDeleteBuffers(1, &m_normalBuffer);
-   glDeleteBuffers(1, &m_textureBuffer);
-   glDeleteBuffers(1, &m_tangentBuffer);
-
    for(unsigned int i = 0; i < m_textures.size(); i++)
       glDeleteTextures(1, &m_textures[i].textureId);
 }
@@ -41,7 +32,6 @@ bool SolarBody::Initialize()
       return true;
 
    MeshData mdata;
-
    if(!Loader::LoadMesh("res/meshes/solarbody.obj", mdata, true))
       return false;
 
@@ -86,12 +76,30 @@ bool SolarBody::Initialize()
    glBindVertexArray(0);
 
 
-   m_isInitialized=  m_vertexBuffer != 0 &&
-      m_normalBuffer != 0 &&
-      m_textureBuffer != 0 &&
-      m_tangentBuffer != 0;
+   m_isInitialized = m_vertexBuffer  != 0 &&
+                     m_normalBuffer  != 0 &&
+                     m_textureBuffer != 0 &&
+                     m_tangentBuffer != 0;
 
    return m_isInitialized;
+}
+
+//-------------------------------------------------------------------------------------------------------
+void SolarBody::Uninitialize()
+{
+   glBindVertexArray(0);
+   glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+   glDeleteVertexArrays(1, &m_vao);
+
+   glDeleteBuffers(1, &m_vertexBuffer);
+   glDeleteBuffers(1, &m_normalBuffer);
+   glDeleteBuffers(1, &m_textureBuffer);
+   glDeleteBuffers(1, &m_tangentBuffer);
+
+   m_vertexBuffer = m_normalBuffer = m_textureBuffer = m_tangentBuffer = m_vao = 0;
+   m_count = 0;
+   m_isInitialized = false;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -153,8 +161,8 @@ const mat4& SolarBody::GetModelMatrix()
 
 //-------------------------------------------------------------------------------------------------------
 void SolarBody::SetTexture(const string& textureFile,
-                                   GLenum activeTextureUnit,
-                                   bool mipmaps)
+                           GLenum activeTextureUnit,
+                           bool mipmaps)
 {
    m_diffuseTextureId = -1;
    if(textureFile == "")

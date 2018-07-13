@@ -58,15 +58,18 @@ typedef enum
    saturn,
    uranus,
    neptune,
-   
+
    lastPlanet
 } Planets;
 
-SolarBody planets[lastPlanet];
+SolarBody* planets[lastPlanet];
 SolarSystem solarSystem;
 
 mat4 modelMatrix, projectionMatrix;
-float distMercurySun = 6000;
+const float distMercurySun = 6000.0f;
+const float speedScale = 0.1f;
+
+bool fastCamera = true;
 
 /*----------------------------------------------------------------------------------------------------------*/
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow)
@@ -170,7 +173,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
    case WM_SIZE:
       resize(LOWORD(lParam), HIWORD(lParam));
       break;
-	  
+
    case WM_MOUSEWHEEL:
       for(int i = 0; i < abs(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA); i++) {
          if((short) GET_WHEEL_DELTA_WPARAM(wParam) > 0)
@@ -179,7 +182,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
             camera.MoveBackward();
       }
       break;
-	  
+
    case WM_LBUTTONDOWN:
       handleMouseRotation = true;
       camera.HandleMouse(mousePos, true);
@@ -248,6 +251,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
          camera.MoveDown();
          break;
 
+      case 'p':
+         fastCamera = !fastCamera;
+         if(fastCamera)
+            camera.SetSpeed(390.0f);
+         else
+            camera.SetSpeed(2.0f);
+         break;
+
       case 'f':
       case 'F':
          if(gbFullscreen == false) {
@@ -259,7 +270,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
             gbFullscreen = false;
          }
          break;
-      
+
       default:
          break;
       }
@@ -308,118 +319,128 @@ void ToggleFullscreen(void)
 /*----------------------------------------------------------------------------------------------------------*/
 void InitSolarSystem()
 {
-   if(!planets[sun].Initialize()) {
-      MessageBoxA(ghwnd, "MECRCURY_INIT_ERROR", "ERROR", MB_OK);
+   if(!SolarBody::Initialize()) {
+      MessageBoxA(ghwnd, "SOLARBODY_INIT_ERROR", "ERROR", MB_OK);
       uninitialize();
       exit(-1);
    }
-   else {
-      planets[sun].Scale(9.7493f);
-      planets[sun].Rotate(0.0f);
-      planets[sun].Revolve(0.0f, 0.0f);
-      planets[sun].SetTexture("res/textures/planets/sun.jpg", GL_TEXTURE0, true);
-   }
 
-   if(!planets[mercury].Initialize()) {
-      MessageBoxA(ghwnd, "MECRCURY_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[mercury].Scale(0.0342f);
-      planets[mercury].Rotate(0.2f);
-      planets[mercury].Revolve(distMercurySun/0.0342f, 0.1f);
-      planets[mercury].SetTexture("res/textures/planets/mercury.jpg", GL_TEXTURE1, true);
-   }
+   unsigned int count = 0;
+   SolarBody::SolarData data;
+
+   data.scale = 9.7493f;
+   data.rotation_speed = 0.0f;
+   data.revolution_speed = 0.0f;
+   data.revolution_radius = 0.0f;
+   data.texture_file = "res/textures/planets/sun.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[sun] = new SolarBody(data);
+
+   data.scale = 0.0342f;
+   data.rotation_speed = 0.02f;
+   data.revolution_speed = 0.01f * speedScale;
+   data.revolution_radius = distMercurySun;
+   data.texture_file = "res/textures/planets/mercury.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[mercury] = new SolarBody(data);
+
+   data.scale = 0.0846f;
+   data.rotation_speed = 0.2f;
+   data.revolution_speed = 0.0065f * speedScale;
+   data.revolution_radius = distMercurySun * 1.0934f;
+   data.texture_file = "res/textures/planets/venus.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[venus] = new SolarBody(data);
+
+   data.scale = 0.0892f;
+   data.rotation_speed = 0.2f;
+   data.revolution_speed = 0.004f * speedScale;
+   data.revolution_radius = distMercurySun * 2.292f;
+   data.texture_file = "res/textures/planets/earth.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[earth] = new SolarBody(data);
+
+   data.scale = 0.0475f;
+   data.rotation_speed = 0.2f;
+   data.revolution_speed = 0.003f * speedScale;
+   data.revolution_radius = distMercurySun * 2.968f;
+   data.texture_file = "res/textures/planets/mars.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[mars] = new SolarBody(data);
+
+   data.scale = 1.0f;
+   data.rotation_speed = 0.2f;
+   data.revolution_speed = 0.019f * speedScale;
+   data.revolution_radius = distMercurySun * 7.717f;
+   data.texture_file = "res/textures/planets/jupiter.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[jupiter] = new SolarBody(data);
 
 
-   if(!planets[venus].Initialize()) {
-      MessageBoxA(ghwnd, "VENUS_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[venus].Scale(0.0846f);
-      planets[venus].Rotate(0.2f);
-      planets[venus].Revolve(distMercurySun * 1.0934/0.0846f, 0.065f);
-      planets[venus].SetTexture("res/textures/planets/venus.jpg", GL_TEXTURE2, true);
-   }
+   data.scale = 0.002f;
+   data.revolution_radius = 650.0f;
+   data.revolution_speed = 0.3f;
+   data.texture_file = "res/textures/moons/jupiter/europa.png";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   planets[jupiter]->AddSatellite(data);
 
-   if(!planets[earth].Initialize()) {
-      MessageBoxA(ghwnd, "EARTH_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[earth].Scale(0.0892f);
-      planets[earth].Rotate(0.2f);
-      planets[earth].Revolve(distMercurySun * 2.292f/0.0892f, 0.09f);
-      planets[earth].SetTexture("res/textures/planets/earth.jpg", GL_TEXTURE3, true);
-   }
+   data.scale = 0.007f;
+   data.revolution_radius = 750.0f;
+   data.texture_file = "res/textures/moons/jupiter/Callisto.png";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.revolution_speed = 0.5f;
+   planets[jupiter]->AddSatellite(data);
 
-   if(!planets[mars].Initialize()) {
-      MessageBoxA(ghwnd, "MARS_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[mars].Scale(0.0475f);
-      planets[mars].Rotate(0.2f);
-      planets[mars].Revolve(distMercurySun * 2.968f/0.0475f, 0.03f);
-      planets[mars].SetTexture("res/textures/planets/mars.jpg", GL_TEXTURE4, true);
-   }
+   data.scale = 0.029f;
+   data.revolution_radius = 800.0f;
+   data.texture_file = "res/textures/moons/jupiter/ganymede.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.revolution_speed = 0.67f;
+   planets[jupiter]->AddSatellite(data);
 
-   if(!planets[jupiter].Initialize()) {
-      MessageBoxA(ghwnd, "JUPITER_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[jupiter].Scale(1.0f);
-      planets[jupiter].Rotate(0.2f);
-      planets[jupiter].Revolve(distMercurySun * 7.717f, 0.09f);
-      planets[jupiter].SetTexture("res/textures/planets/jupiter.jpg", GL_TEXTURE5, true);
-   }
+   data.scale = 0.009f;
+   data.revolution_radius = 680.0f;
+   data.texture_file = "res/textures/moons/jupiter/io.png";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.revolution_speed = 0.85f;
+   planets[jupiter]->AddSatellite(data);
 
-   if(!planets[saturn].Initialize()) {
-      MessageBoxA(ghwnd, "SATURN_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[saturn].Scale(0.843f);
-      planets[saturn].Rotate(0.2f);
-      planets[saturn].Revolve(distMercurySun * 13.338/0.843f, 0.15f);
-      planets[saturn].SetTexture("res/textures/planets/saturn.jpg", GL_TEXTURE6, true);
-   }
 
-   if(!planets[uranus].Initialize()) {
-      MessageBoxA(ghwnd, "URANUS_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[uranus].Scale(0.3575f);
-      planets[uranus].Rotate(0.2f);
-      planets[uranus].Revolve(distMercurySun * 25.788f/0.3575f, 0.32f);
-      planets[uranus].SetTexture("res/textures/planets/uranus.jpg", GL_TEXTURE7, true);
-   }
+   data.scale = 0.843f;
+   data.rotation_speed = 0.2f;
+   data.revolution_speed = 0.015f * speedScale;
+   data.revolution_radius = distMercurySun * 13.338f;
+   data.texture_file = "res/textures/planets/saturn.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[saturn] = new SolarBody(data);
 
-   if(!planets[neptune].Initialize()) {
-      MessageBoxA(ghwnd, "NEPTUNE_INIT_ERROR", "ERROR", MB_OK);
-      uninitialize();
-      exit(-1);
-   }
-   else {
-      planets[neptune].Scale(0.3464f);
-      planets[neptune].Rotate(0.2f);
-      planets[neptune].Revolve(distMercurySun * 39.89f/0.3464f, 0.63f);
-      planets[neptune].SetTexture("res/textures/planets/neptune.jpg", GL_TEXTURE8, true);
-   }
+   data.scale = 0.3575f;
+   data.rotation_speed = 0.2f;
+   data.revolution_speed = 0.032f * speedScale;
+   data.revolution_radius = distMercurySun * 25.788f;
+   data.texture_file = "res/textures/planets/uranus.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[uranus] = new SolarBody(data);
 
-   for(int i = sun; i < lastPlanet; i++) {
-      solarSystem.AddSolarBody(&planets[(Planets) i]);
-   }
+   data.scale = 0.3464f;
+   data.rotation_speed = 0.2f;
+   data.revolution_speed = 0.063f * speedScale;
+   data.revolution_radius = distMercurySun * 39.89f;
+   data.texture_file = "res/textures/planets/neptune.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   data.mipmap = true;
+   planets[neptune] = new SolarBody(data);
+
+   for(int i = sun; i < lastPlanet; i++)
+      solarSystem.AddSolarBody(planets[i]);
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
@@ -503,7 +524,7 @@ void initialize(void)
 
    InitSolarSystem();
 
-   camera.Set(vec3(0.0f, 0.0f, 18000.0f), vec3(0.0f, 0.0f, -1.0f));
+   camera.Set(vec3(28112.3203f, 51.0976219f, 1563.52637f), vec3(0.0f, 0.0f, -1.0f));
    camera.SetSpeed(390.0f);
 }
 
@@ -552,4 +573,9 @@ void uninitialize(void)
 
    DestroyWindow(ghwnd);
    ghwnd = NULL;
+
+   for(unsigned int i = sun; i < lastPlanet; i++)
+      delete planets[i];
+
+   SolarBody::Uninitialize();
 }

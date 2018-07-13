@@ -13,6 +13,6 @@ public:
    void Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix);
 
 private:
-   vector<SolarBody*> m_solarSystem;
+   vector<SolarBody*> m_SolarBodies;
 };
 

@@ -14,7 +14,7 @@ SolarSystem::~SolarSystem()
 //-------------------------------------------------------------------------------------------------------
 void SolarSystem::AddSolarBody(SolarBody* solarbody)
 {
-   m_solarSystem.push_back(solarbody);
+   m_SolarBodies.push_back(solarbody);
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -24,16 +24,8 @@ void SolarSystem::Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewM
 
    program.Use(true);
 
-   static GLint uniformMvp = program.GetUniformLocation("mvp");
-   static GLint uniformSampler = program.GetUniformLocation("sampler");
-
-   for(unsigned int i = 0; i < m_solarSystem.size(); i++) {
-
-      mvp = projectionMatrix * viewMatrix * m_solarSystem[i]->GetModelMatrix();
-      glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, &mvp[0][0]);
-      glUniform1i(uniformSampler, m_solarSystem[i]->GetDiffuseTextureId());
-
-      m_solarSystem[i]->Render();
+   for(unsigned int i = 0; i < m_SolarBodies.size(); i++) {
+      m_SolarBodies[i]->Render(program, projectionMatrix, viewMatrix);
    }
 }
 

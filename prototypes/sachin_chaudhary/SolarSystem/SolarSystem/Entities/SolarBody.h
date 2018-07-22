@@ -51,6 +51,9 @@ public:
    void Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix, const mat4& offsetMatrix = mat4());
 
 private:
+   const vec3& RotateAroundAxis(vec3 axis, float radius, float angle);
+
+private:
    static GLuint m_vertexBuffer, m_normalBuffer, m_textureBuffer, m_tangentBuffer, m_vao;
    static bool m_isInitialized;
    static size_t m_count;

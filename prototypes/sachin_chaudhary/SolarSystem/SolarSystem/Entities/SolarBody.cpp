@@ -1,5 +1,6 @@
 #include "SolarBody.h"
 #include "..\Framework\Loader.h"
+using glm::mat3;
 
 GLuint SolarBody::m_vertexBuffer = 0;
 GLuint SolarBody::m_normalBuffer = 0;
@@ -9,6 +10,24 @@ GLuint SolarBody::m_vao = 0;
 
 size_t SolarBody::m_count = 0;
 bool SolarBody::m_isInitialized;
+
+//-------------------------------------------------------------------------------------------------------
+const vec3& SolarBody::RotateAroundAxis(vec3 axis, float radius, float angle)
+{
+   axis = glm::normalize(axis);
+
+   float C = radius * glm::cos(glm::radians(angle));
+   float S = radius * glm::sin(glm::radians(angle));
+   float t = 1 - C;
+
+   static vec3 pt;
+
+   pt[0] = (t * axis.x * axis.x) + C;
+   pt[1] = (t * axis.x * axis.y) - (S * axis.z);
+   pt[2] = (t * axis.x * axis.z) + (S * axis.y);
+
+   return pt;
+}
 
 //-------------------------------------------------------------------------------------------------------
 SolarBody::SolarBody(const SolarData& data)
@@ -121,17 +140,18 @@ void SolarBody::Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMat
 
    m_modelMatrix = offsetMatrix;
 
-   // do revolutions using translations; revolutions are in the x-z plane
+   static mat3 m;
+   static vec3 v;
+
+   v = RotateAroundAxis(vec3(0.0f, 0.1f, 0.0f), m_revolveRadius, m_revolveAngle);
+
+   // do revolutions using translations; revolutions are around the specified axis through the origin
    if(m_revolveRadius > 0) {
-      m_modelMatrix = glm::translate(m_modelMatrix, vec3(m_revolveRadius * glm::cos(glm::radians(m_revolveAngle)),
-                                                         0.0f,
-                                                         m_revolveRadius * glm::sin(glm::radians(m_revolveAngle))));
+      m_modelMatrix = glm::translate(m_modelMatrix, v);
 
       // render all the satellites: this will be recursive
       for(unsigned int i = 0; i < m_satellites.size(); i++)
-         m_satellites[i]->Render(program, projectionMatrix, viewMatrix, glm::translate(vec3(m_revolveRadius * glm::cos(glm::radians(m_revolveAngle)),
-                                                                                            0.0f,
-                                                                                            m_revolveRadius * glm::sin(glm::radians(m_revolveAngle)))));
+         m_satellites[i]->Render(program, projectionMatrix, viewMatrix, m_modelMatrix);
 
       m_revolveAngle -= m_revolveSpeed;
 
@@ -148,6 +168,7 @@ void SolarBody::Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMat
          m_rotateAngle = 360.0f;
    }
 
+   // perform scaling at the end
    m_modelMatrix = glm::scale(m_modelMatrix, vec3(m_scale));
 
    mvp = projectionMatrix * viewMatrix * m_modelMatrix;

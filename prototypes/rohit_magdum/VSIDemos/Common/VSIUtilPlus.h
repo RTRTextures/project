@@ -5,7 +5,7 @@
 #include <vector>
 #include <gl\GL.h>
 #include <gl\GLU.h>
-#include <vector>
+#include <VSIUtilModelObject.h>
 
 #ifdef VSIUTILPLUS_EXPORTS
 #define VSIUTILPLUS_API __declspec(dllexport)
@@ -36,7 +36,12 @@ namespace VSIUtil
         bool mbFullscreen;
         DWORD mdwStyle;
         WINDOWPLACEMENT mwpPrev;
-        
+        unsigned long mWidth;
+        unsigned long mHeight;
+        /*********Model related Variables *********/
+        VSIUtilModelObject *m_CurrentModel;
+        /******************************************/
+
         /* Windowing related apis*/
         void Initialize();
         void Uninitialize();
@@ -101,11 +106,15 @@ namespace VSIUtil
 
         /*************Shader related apis.****************/
         VSIUTILPLUS_API int VSIUtilLoadShaders(char*, char*);
+        VSIUTILPLUS_API int VSIUtilLoadShaders(char*, char*, char*, char*);
         /*************************************************/
 
         /*************Texture related apis.***************/
-        VSIUTILPLUS_API int VSIUtilLoadTexture(char*, GLuint texture);
+        VSIUTILPLUS_API int VSIUtilLoadTexture(char*, GLuint *texture);
         /*************************************************/
+
+        /*************Cube mapping related apis. *********/
+        VSIUTILPLUS_API void VSIUtilLoadCubeMapTextures(std::vector<std::string>, GLuint*);
 
         /*************Buffer related apis.****************/
         VSIUTILPLUS_API void VSIUtilGenAndBindBuffer(GLuint buffer, 
@@ -115,10 +124,10 @@ namespace VSIUtil
 
         
         /************* Interfaces implement by Derived class ****************/
-        VSIUTILPLUS_API virtual std::vector<glm::vec3>& VSIUtilGetVertices() = 0;
-        VSIUTILPLUS_API virtual std::vector<glm::vec3>& VSIUtilGetNormals() = 0;
-        VSIUTILPLUS_API virtual std::vector<glm::vec2>& VSIUtilGetTexcoords() = 0;
-        VSIUTILPLUS_API virtual std::vector<glm::vec3>& VSIUtilGetTangents() = 0;
+        VSIUTILPLUS_API virtual std::vector<glm::vec3>& VSIUtilGetVertices();
+        VSIUTILPLUS_API virtual std::vector<glm::vec3>& VSIUtilGetNormals();
+        VSIUTILPLUS_API virtual std::vector<glm::vec2>& VSIUtilGetTexcoords();
+        VSIUTILPLUS_API virtual std::vector<glm::vec3>& VSIUtilGetTangents();
         VSIUTILPLUS_API virtual void VSIUtilMessageHandler(UINT, WPARAM, LPARAM) = 0;
         /*******************************************************************/
     };

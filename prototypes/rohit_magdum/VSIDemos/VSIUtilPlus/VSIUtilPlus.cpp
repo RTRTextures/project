@@ -23,6 +23,7 @@ namespace VSIUtil
         mbIsEscapeKeyPressed = false;
         mbFullscreen = false;
         mwpPrev = { sizeof(WINDOWPLACEMENT) };
+        m_CurrentModel = NULL;
     }
     VSIUtilPlus::~VSIUtilPlus()
     {
@@ -305,11 +306,17 @@ namespace VSIUtil
 
     void VSIUtilPlus::VSIUtilResize(unsigned long width, unsigned long height)
     {
+        mWidth = width;
+        mHeight = height;
+        FILE* fptr;
+        fopen_s(&fptr, "temp.txt", "a+");
+        fprintf(fptr, "Width = %d, Height = %d\n", width, height);
+        fclose(fptr);
         glViewport(0, 0, width, height);
         float aspect = (float)width / (float)height;
-        mProjMatrix = glm::perspective(50.0f,
+        mProjMatrix = glm::perspective(45.0f,
             aspect,
-            1.0f,
+            0.1f,
             1000.0f);
         
     }
@@ -352,6 +359,26 @@ namespace VSIUtil
             ShowCursor(TRUE);
         }
 
+    }
+
+    std::vector<glm::vec3>& VSIUtilPlus::VSIUtilGetVertices()
+    {
+        return m_CurrentModel->m_vertices;
+    }
+
+    std::vector<glm::vec3>& VSIUtilPlus::VSIUtilGetNormals()
+    {
+        return m_CurrentModel->m_normals;
+    }
+
+    std::vector<glm::vec2>& VSIUtilPlus::VSIUtilGetTexcoords()
+    {
+        return m_CurrentModel->m_texCoords;
+    }
+
+    std::vector<glm::vec3>& VSIUtilPlus::VSIUtilGetTangents()
+    {
+        return m_CurrentModel->m_tangents;
     }
 }
 

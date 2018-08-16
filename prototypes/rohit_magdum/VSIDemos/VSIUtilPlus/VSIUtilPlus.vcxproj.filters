@@ -35,5 +35,8 @@
     <ClInclude Include="..\Common\VSIUtilPlus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Common\VSIUtilModelObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

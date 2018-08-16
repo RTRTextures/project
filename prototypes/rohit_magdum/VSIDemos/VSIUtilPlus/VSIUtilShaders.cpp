@@ -92,6 +92,95 @@ namespace VSIUtil
         return 0;
     }
 
+    int VSIUtilPlus::VSIUtilLoadShaders(char* vsFilePath, char* fsFilePath, 
+                                        char* tessControlFilePath, char* tessEvaluationFilePath)
+    {
+
+        int retVal;
+        GLubyte* vertexShaderSource;
+        GLubyte* fragmentShaderSource;
+        GLuint progObj;
+        GLuint vertexShader;
+        GLuint fragmentShader;
+
+        GLubyte* controlShaderSource;
+        GLubyte* evaluationShaderSource;
+        GLuint controlShader;
+        GLuint evaluationShader;
+
+
+        if (!GLEW_VERSION_2_0 && (!GLEW_ARB_vertex_shader ||
+            !GLEW_ARB_fragment_shader ||
+            !GLEW_ARB_shader_objects ||
+            !GLEW_ARB_shading_language_100 ||
+            !GLEW_ARB_tessellation_shader))
+        {
+            // Required functionality not present. Returning error.
+            MessageBoxA(NULL, "Required functionality not supported.", "ERROR", MB_OK);
+            return -1;
+        }
+
+        // Create program object, attach shaders, then link
+        progObj = glCreateProgram();
+
+        if (vsFilePath != NULL)
+        {
+            vertexShaderSource = loadShaderFromFile(vsFilePath);
+            if (!vertexShaderSource)
+                return -1;
+
+            retVal = compileShader(vertexShaderSource, GL_VERTEX_SHADER, &vertexShader);
+            if (retVal == -1)
+                return -1;
+
+            glAttachShader(progObj, vertexShader);
+        }
+
+        if (fsFilePath != NULL)
+        {
+            fragmentShaderSource = loadShaderFromFile(fsFilePath);
+            if (!fragmentShaderSource)
+                return -1;
+
+            retVal = compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER, &fragmentShader);
+            if (retVal == -1)
+                return -1;
+
+            glAttachShader(progObj, fragmentShader);
+        }
+
+        if (tessControlFilePath != NULL)
+        {
+            controlShaderSource = loadShaderFromFile(tessControlFilePath);
+            if (!controlShaderSource)
+                return -1;
+
+            retVal = compileShader(controlShaderSource, GL_TESS_CONTROL_SHADER, &controlShader);
+            if (retVal == -1)
+            {
+                return -1;
+            }
+
+            glAttachShader(progObj, controlShader);
+        }
+
+        if (tessEvaluationFilePath != NULL)
+        {
+            evaluationShaderSource = loadShaderFromFile(tessEvaluationFilePath);
+            if (!evaluationShaderSource)
+                return -1;
+
+            retVal = compileShader(evaluationShaderSource, GL_TESS_EVALUATION_SHADER, &evaluationShader);
+            if (retVal == -1)
+                return -1;
+
+            glAttachShader(progObj, evaluationShader);
+        }
+
+        linkShader(progObj);
+        return progObj;
+    }
+
     int VSIUtilPlus::VSIUtilLoadShaders(char* vsFilePath, char* fsFilePath)
     {
         int retVal;

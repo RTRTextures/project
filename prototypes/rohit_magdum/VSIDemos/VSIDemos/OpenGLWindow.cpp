@@ -19,6 +19,7 @@ public:
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
+    std::vector<glm::vec3> tangents;
     GLuint m_texture;
     
     VSIDemo()
@@ -54,7 +55,7 @@ public:
 
     std::vector<glm::vec3>& VSIUtilGetTangents()
     {
-        return std::vector<glm::vec3>();
+        return tangents;
     }
 
     void VSIUtilMessageHandler(UINT iMsg, WPARAM wParam, LPARAM lParam)
@@ -75,7 +76,7 @@ public:
 
     void VSIUtilSceneInit()
     {
-        VSIUtilLoadMesh("sphere_zup.obj", VERTEX_NORMAL_AND_TEXTURE);
+        VSIUtilLoadMesh("Sphere.obj", VERTEX_NORMAL_AND_TEXTURE);
         
         progObj = VSIUtilLoadShaders("VSIDemo.vs.glsl", "VSIDemo.fs.glsl");
     
@@ -91,7 +92,7 @@ public:
         
         VSIUtilGenAndBindBuffer(cube_buffer[2], 2, NORMALS);
     
-        VSIUtilLoadTexture("earth_orig.jpg", m_texture);
+        VSIUtilLoadTexture("earth_orig.jpg", &m_texture);
         glBindVertexArray(0);
     }
 
@@ -109,7 +110,7 @@ public:
         static GLfloat f = 0.0f;
         f += 0.0001f;
     
-        glm::mat4 mv_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -20.0f)) *
+        glm::mat4 mv_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -10.0f)) *
             glm::rotate(glm::mat4(1.0f), f * 45.0f, glm::vec3(0.0, 1.0f, 0.0)) *
             glm::rotate(glm::mat4(1.0f), 5.0f, glm::vec3(0.0, 0.0f, 1.0));
         glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));

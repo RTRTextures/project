@@ -91,10 +91,10 @@ public:
         VSIUtilGenAndBindBuffer(m_BB8Buffer[TANGENTS], 3, TANGENTS);
 
         glActiveTexture(GL_TEXTURE0); 
-        VSIUtilLoadTexture("metal.jpg", m_texture[0]);
+        VSIUtilLoadTexture("metal.jpg", &m_texture[0]);
         
         glActiveTexture(GL_TEXTURE1); 
-        VSIUtilLoadTexture("normal.bmp", m_texture[1]);
+        VSIUtilLoadTexture("normal.bmp", &m_texture[1]);
         glBindVertexArray(0);
     }
 
@@ -108,6 +108,8 @@ public:
 
         glClearBufferfv(GL_COLOR, 0, black);
         glClearBufferfv(GL_DEPTH, 0, &one);
+
+        glUseProgram(m_progObj);
 
         static GLfloat f = 0.0f;
         f += 0.00001f;

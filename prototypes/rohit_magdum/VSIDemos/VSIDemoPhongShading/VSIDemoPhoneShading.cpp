@@ -77,7 +77,7 @@ public:
 
         VSIUtilGenAndBindBuffer(cube_buffer[2], 2, NORMALS);
 
-        VSIUtilLoadTexture("earth_orig.jpg", m_texture);
+        VSIUtilLoadTexture("earth_orig.jpg", &m_texture);
         glBindVertexArray(0);
     }	
 

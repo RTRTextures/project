@@ -171,7 +171,10 @@ namespace VSIUtil
             }
         }
 
-        VSIUtilCalculateTangents();
+        if (textureIndices.size() != 0)
+        {
+//            VSIUtilCalculateTangents();
+        }
     }
 
     VSIUTILPLUS_API void VSIUtilPlus::VSIUtilCalculateTangents()

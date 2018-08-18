@@ -16,6 +16,7 @@ using namespace Utility;
 #include "Entities\SolarBody.h"
 #include "Entities\SolarSystem.h"
 
+#include <random>
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
@@ -41,7 +42,7 @@ bool gbActiveWindow = false;
 bool gbEscapeKeyIsPressed = false;
 bool gbFullscreen = false;
 
-OGLProgram programEarth;
+OGLProgram programPlanet, programEarth, programSun;
 
 vec2 mousePos;
 Camera camera;
@@ -67,7 +68,6 @@ SolarSystem solarSystem;
 
 mat4 modelMatrix, projectionMatrix;
 const float distMercurySun = 6000.0f;
-const float speedScale = 0.1f;
 
 bool fastCamera = true;
 
@@ -317,6 +317,17 @@ void ToggleFullscreen(void)
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
+double Random(double min = 0.0f, double max = 1.0f)
+{
+   static std::random_device rd;  //Will be used to obtain a seed for the random number engine
+   static std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+
+   uniform_real_distribution<double> dis(min, max);
+
+   return dis(gen);
+}
+
+/*----------------------------------------------------------------------------------------------------------*/
 void InitSolarSystem()
 {
    if(!SolarBody::Initialize()) {
@@ -327,6 +338,10 @@ void InitSolarSystem()
 
    unsigned int count = 0;
    SolarBody::SolarData data;
+
+   // global Y: common axis of rotation for all planets and satellites
+   // any abitrary rotation axis is supported though !
+   data.axis = vec3(0.0f, 1.0f, 0.0f);
 
    data.scale = 9.7493f;
    data.rotation_speed = 0.0f;
@@ -339,7 +354,7 @@ void InitSolarSystem()
 
    data.scale = 0.0342f;
    data.rotation_speed = 0.02f;
-   data.revolution_speed = 0.01f * speedScale;
+   data.revolution_speed = 0.01f;
    data.revolution_radius = distMercurySun;
    data.texture_file = "res/textures/planets/mercury.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
@@ -348,7 +363,7 @@ void InitSolarSystem()
 
    data.scale = 0.0846f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.0065f * speedScale;
+   data.revolution_speed = 0.0065f;
    data.revolution_radius = distMercurySun * 1.0934f;
    data.texture_file = "res/textures/planets/venus.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
@@ -357,16 +372,23 @@ void InitSolarSystem()
 
    data.scale = 0.0892f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.004f * speedScale;
+   data.revolution_speed = 0.004f;
    data.revolution_radius = distMercurySun * 2.292f;
    data.texture_file = "res/textures/planets/earth.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
    data.mipmap = true;
    planets[earth] = new SolarBody(data);
 
+   data.scale = 0.008f;
+   data.revolution_radius = 75.0f;
+   data.rotation_speed = data.revolution_speed = 2.5f;
+   data.texture_file = "res/textures/moons/earth/moon.jpg";
+   data.textureUnit = GL_TEXTURE0 + (count++);
+   planets[earth]->AddSatellite(data);
+
    data.scale = 0.0475f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.003f * speedScale;
+   data.revolution_speed = 0.003f;
    data.revolution_radius = distMercurySun * 2.968f;
    data.texture_file = "res/textures/planets/mars.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
@@ -375,12 +397,18 @@ void InitSolarSystem()
 
    data.scale = 1.0f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.019f * speedScale;
+   data.revolution_speed = 0.019f;
    data.revolution_radius = distMercurySun * 7.717f;
    data.texture_file = "res/textures/planets/jupiter.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
    data.mipmap = true;
    planets[jupiter] = new SolarBody(data);
+
+   data.scale = 0.025f;
+   data.revolution_radius = 650.0f;
+   data.revolution_speed = 2.3f;
+   data.texture_file = "res/textures/moons/jupiter/europa.png";
+   data.textureUnit = GL_TEXTURE0 + (count++);
 
 
    data.scale = 0.002f;
@@ -414,7 +442,7 @@ void InitSolarSystem()
 
    data.scale = 0.843f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.015f * speedScale;
+   data.revolution_speed = 0.015f;
    data.revolution_radius = distMercurySun * 13.338f;
    data.texture_file = "res/textures/planets/saturn.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
@@ -423,7 +451,7 @@ void InitSolarSystem()
 
    data.scale = 0.3575f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.032f * speedScale;
+   data.revolution_speed = 0.032f;
    data.revolution_radius = distMercurySun * 25.788f;
    data.texture_file = "res/textures/planets/uranus.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
@@ -432,14 +460,14 @@ void InitSolarSystem()
 
    data.scale = 0.3464f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.063f * speedScale;
+   data.revolution_speed = 0.063f;
    data.revolution_radius = distMercurySun * 39.89f;
    data.texture_file = "res/textures/planets/neptune.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
    data.mipmap = true;
    planets[neptune] = new SolarBody(data);
 
-   for(int i = sun; i < lastPlanet; i++)
+   for(int i = mercury; i < lastPlanet; i++)
       solarSystem.AddSolarBody(planets[i]);
 }
 
@@ -511,6 +539,19 @@ void initialize(void)
    glewInit();
 
    string msg;
+
+   if(!programPlanet.Initialize("Shaders/vPlanet.glsl",
+                               "Shaders/fPlanet.glsl",
+                               "",
+                               "",
+                               "",
+                               msg)) {
+      MessageBoxA(ghwnd, msg.c_str(), "ERROR", MB_OK);
+      uninitialize();
+      exit(-1);
+   }
+
+
    if(!programEarth.Initialize("Shaders/vEarth.glsl",
                                "Shaders/fEarth.glsl",
                                "",
@@ -522,10 +563,34 @@ void initialize(void)
       exit(-1);
    }
 
+   if(!programSun.Initialize("Shaders/vSun.glsl",
+                             "Shaders/fSun.glsl",
+                             "",
+                             "",
+                             "",
+                             msg)) {
+      MessageBoxA(ghwnd, msg.c_str(), "ERROR", MB_OK);
+      uninitialize();
+      exit(-1);
+   }
+
+   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
    InitSolarSystem();
 
-   camera.Set(vec3(28112.3203f, 51.0976219f, 1563.52637f), vec3(0.0f, 0.0f, -1.0f));
+   camera.Set(vec3(-8967.87109f, 370.465637f, 14319.4648f), vec3(0.747302055f, -0.00399998995f, -0.664473951f));
    camera.SetSpeed(390.0f);
+}
+
+/*----------------------------------------------------------------------------------------------------------*/
+void RenderSun()
+{
+   static float start = 0.0f;
+   programSun.Use(true);
+   static GLint uniformStart = programSun.GetUniformLocation("start");
+   start += 0.00016f;
+   glUniform1f(uniformStart, start);
+
+   planets[sun]->Render(programSun, projectionMatrix, camera.GetViewMatrix());
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
@@ -533,7 +598,17 @@ void display(void)
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-   solarSystem.Render(programEarth, projectionMatrix, camera.GetViewMatrix());
+   RenderSun();
+
+   for(int planet = mercury; planet < earth; planet++) {
+      planets[planet]->Render(programPlanet, projectionMatrix, camera.GetViewMatrix());
+   }
+
+   for(int planet = mars; planet < lastPlanet; planet++) {
+      planets[planet]->Render(programPlanet, projectionMatrix, camera.GetViewMatrix());
+   }
+
+   planets[earth]->Render(programEarth, projectionMatrix, camera.GetViewMatrix());
 
    SwapBuffers(ghdc);
 }

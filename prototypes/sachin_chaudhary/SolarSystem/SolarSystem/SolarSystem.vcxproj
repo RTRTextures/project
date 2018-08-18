@@ -161,7 +161,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fEarth.glsl" />
+    <None Include="Shaders\fPlanet.glsl" />
+    <None Include="Shaders\fSun.glsl" />
     <None Include="Shaders\vEarth.glsl" />
+    <None Include="Shaders\vPlanet.glsl" />
+    <None Include="Shaders\vSun.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

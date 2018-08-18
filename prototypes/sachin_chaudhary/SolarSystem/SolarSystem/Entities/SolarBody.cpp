@@ -11,6 +11,8 @@ GLuint SolarBody::m_vao = 0;
 size_t SolarBody::m_count = 0;
 bool SolarBody::m_isInitialized;
 
+const float speedScale = 0.01f;
+
 //-------------------------------------------------------------------------------------------------------
 const vec3& SolarBody::RotateAroundAxis(vec3 axis, float radius, float angle)
 {
@@ -33,14 +35,18 @@ const vec3& SolarBody::RotateAroundAxis(vec3 axis, float radius, float angle)
 SolarBody::SolarBody(const SolarData& data)
 {
    m_scale = data.scale;
-   m_rotateSpeed = data.rotation_speed;
-   m_revolveSpeed = data.revolution_speed;
+   m_rotateSpeed = speedScale * data.rotation_speed;
+   m_revolveSpeed = speedScale * data.revolution_speed;
    m_revolveRadius = data.revolution_radius;
+
+   m_axis = data.axis;
 
    SetTexture(data.texture_file, data.textureUnit, data.mipmap);
 
    // assume anti-clockwise rotations (at least for now)
    m_rotateAngle = m_revolveAngle = 360.0f;
+
+   m_lastProgram = nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -133,17 +139,25 @@ void SolarBody::Uninitialize()
 //-----------------------------------------------------------------------------------------------------------------
 void SolarBody::Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix, const mat4& offsetMatrix)
 {
-   static GLint uniformMvp = program.GetUniformLocation("mvp");
-   static GLint uniformSampler = program.GetUniformLocation("sampler");
+   static GLint uniformModelMatrix;
+   static GLint uniformProjectionViewMatrix;
+   static GLint uniformSampler;
 
-   static mat4 mvp;
+   program.Use(true);
+   if(m_lastProgram != &program) {
+      uniformModelMatrix = program.GetUniformLocation("modelMatrix");
+      uniformProjectionViewMatrix = program.GetUniformLocation("projectionViewMatrix");
+      uniformSampler = program.GetUniformLocation("sampler");
+
+      m_lastProgram = &program;
+   }
 
    m_modelMatrix = offsetMatrix;
 
    static mat3 m;
    static vec3 v;
 
-   v = RotateAroundAxis(vec3(0.0f, 0.1f, 0.0f), m_revolveRadius, m_revolveAngle);
+   v = RotateAroundAxis(m_axis, m_revolveRadius, m_revolveAngle);
 
    // do revolutions using translations; revolutions are around the specified axis through the origin
    if(m_revolveRadius > 0) {
@@ -171,14 +185,19 @@ void SolarBody::Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMat
    // perform scaling at the end
    m_modelMatrix = glm::scale(m_modelMatrix, vec3(m_scale));
 
-   mvp = projectionMatrix * viewMatrix * m_modelMatrix;
-   glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, &mvp[0][0]);
+   static mat4 projectionViewMatrix;
+   projectionViewMatrix = projectionMatrix * viewMatrix;
+   glUniformMatrix4fv(uniformModelMatrix, 1, GL_FALSE, &m_modelMatrix[0][0]);
+   glUniformMatrix4fv(uniformProjectionViewMatrix, 1, GL_FALSE, &projectionViewMatrix[0][0]);
+
    glUniform1i(uniformSampler, m_diffuseTextureId);
 
    // render the solar body
    glBindVertexArray(m_vao);
    glDrawArrays(GL_TRIANGLES, 0, (GLsizei) m_count);
    glBindVertexArray(0);
+
+   //program.Use(false);
 }
 
 //-------------------------------------------------------------------------------------------------------

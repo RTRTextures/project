@@ -1,5 +1,3 @@
-#pragma once
-
 #include <Renderer.h>
 #include <gl\GL.h>
 #include <gl\GLU.h>
@@ -298,4 +296,3 @@ void SolarSystemRenderer::OnResize(unsigned int width, unsigned int height)
     // calculate the aspect ratio of the view
     gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
-#pragma once

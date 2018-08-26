@@ -23,4 +23,3 @@ namespace Features
     };
 }
 
-#pragma once

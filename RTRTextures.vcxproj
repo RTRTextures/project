@@ -19,18 +19,38 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\include\Camera.h" />
+    <ClInclude Include="common\include\Loader.h" />
+    <ClInclude Include="common\include\OGLProgram.h" />
     <ClInclude Include="common\include\Renderer.h" />
     <ClInclude Include="src\features\RendererRegistrar.h" />
+    <ClInclude Include="src\features\schaudhary\Entities\SolarBody.h" />
+    <ClInclude Include="src\features\schaudhary\Entities\SolarSystem.h" />
+    <ClInclude Include="src\features\schaudhary\SolarSystemExt.h" />
     <ClInclude Include="src\features\SolarSystem\SolarRender.h" />
     <ClInclude Include="src\features\Test\TestRenderer.h" />
     <ClInclude Include="src\framework\Host.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\src\Camera.cpp" />
+    <ClCompile Include="common\src\Loader.cpp" />
+    <ClCompile Include="common\src\OGLProgram.cpp" />
     <ClCompile Include="src\features\RendererRegistrar.cpp" />
+    <ClCompile Include="src\features\schaudhary\Entities\SolarBody.cpp" />
+    <ClCompile Include="src\features\schaudhary\Entities\SolarSystem.cpp" />
+    <ClCompile Include="src\features\schaudhary\SolarSystemExt.cpp" />
     <ClCompile Include="src\features\SolarSystem\SolarRender.cpp" />
     <ClCompile Include="src\framework\Host.cpp" />
     <ClCompile Include="src\framework\WinFrameWorkUtil.cpp" />
     <ClCompile Include="src\framework\WinHost.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\schaudhary\Shaders\fEarth.glsl" />
+    <None Include="res\schaudhary\Shaders\fPlanet.glsl" />
+    <None Include="res\schaudhary\Shaders\fSun.glsl" />
+    <None Include="res\schaudhary\Shaders\vEarth.glsl" />
+    <None Include="res\schaudhary\Shaders\vPlanet.glsl" />
+    <None Include="res\schaudhary\Shaders\vSun.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D616B408-0BDC-4094-BA93-0FC1D23418F7}</ProjectGuid>

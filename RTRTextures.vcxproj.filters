@@ -25,6 +25,15 @@
     <Filter Include="src\features\solarsystem">
       <UniqueIdentifier>{b1954e54-1175-461d-8e39-257c3d6b00b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\features\schaudhary">
+      <UniqueIdentifier>{a9b83c5d-9e5f-4800-a44a-431ea7b4331c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\features\schaudhary\Entities">
+      <UniqueIdentifier>{ea0c23de-9023-414c-8c51-5efded5e4add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\features\schaudhary\Shaders">
+      <UniqueIdentifier>{33125cc8-341c-43fb-a3aa-431d5abc7a38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\features\RendererRegistrar.h">
@@ -41,6 +50,24 @@
     </ClInclude>
     <ClInclude Include="src\features\SolarSystem\SolarRender.h">
       <Filter>src\features\solarsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\schaudhary\Entities\SolarBody.h">
+      <Filter>src\features\schaudhary\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\schaudhary\Entities\SolarSystem.h">
+      <Filter>src\features\schaudhary\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\schaudhary\SolarSystemExt.h">
+      <Filter>src\features\schaudhary</Filter>
+    </ClInclude>
+    <ClInclude Include="common\include\Camera.h">
+      <Filter>common\include</Filter>
+    </ClInclude>
+    <ClInclude Include="common\include\Loader.h">
+      <Filter>common\include</Filter>
+    </ClInclude>
+    <ClInclude Include="common\include\OGLProgram.h">
+      <Filter>common\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -59,5 +86,43 @@
     <ClCompile Include="src\features\SolarSystem\SolarRender.cpp">
       <Filter>src\features\solarsystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\features\schaudhary\Entities\SolarBody.cpp">
+      <Filter>src\features\schaudhary\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\features\schaudhary\Entities\SolarSystem.cpp">
+      <Filter>src\features\schaudhary\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\features\schaudhary\SolarSystemExt.cpp">
+      <Filter>src\features\schaudhary</Filter>
+    </ClCompile>
+    <ClCompile Include="common\src\Camera.cpp">
+      <Filter>common\src</Filter>
+    </ClCompile>
+    <ClCompile Include="common\src\Loader.cpp">
+      <Filter>common\src</Filter>
+    </ClCompile>
+    <ClCompile Include="common\src\OGLProgram.cpp">
+      <Filter>common\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\schaudhary\Shaders\fEarth.glsl">
+      <Filter>src\features\schaudhary\Shaders</Filter>
+    </None>
+    <None Include="res\schaudhary\Shaders\fPlanet.glsl">
+      <Filter>src\features\schaudhary\Shaders</Filter>
+    </None>
+    <None Include="res\schaudhary\Shaders\fSun.glsl">
+      <Filter>src\features\schaudhary\Shaders</Filter>
+    </None>
+    <None Include="res\schaudhary\Shaders\vEarth.glsl">
+      <Filter>src\features\schaudhary\Shaders</Filter>
+    </None>
+    <None Include="res\schaudhary\Shaders\vPlanet.glsl">
+      <Filter>src\features\schaudhary\Shaders</Filter>
+    </None>
+    <None Include="res\schaudhary\Shaders\vSun.glsl">
+      <Filter>src\features\schaudhary\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -717,6 +717,7 @@ bool Loader::Load2DTexture(const char* fileName, GLuint& textureId, GLenum activ
       glTextureParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.0f);
    }
 
+   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_LOD, 1);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, enableMipMaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, enableMipMaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 

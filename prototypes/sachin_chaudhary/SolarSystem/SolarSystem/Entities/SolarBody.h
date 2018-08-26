@@ -28,6 +28,8 @@ public:
    {
       float scale;
       float rotation_speed;
+
+      vec3 axis;
       float revolution_radius;
       float revolution_speed;
 
@@ -47,7 +49,6 @@ public:
    unsigned int GetDiffuseTextureId();
 
    bool AddSatellite(const SolarData& data);
-
    void Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix, const mat4& offsetMatrix = mat4());
 
 private:
@@ -63,9 +64,10 @@ private:
    float m_scale;
    float m_rotateSpeed, m_rotateAngle;
    float m_revolveSpeed, m_revolveAngle, m_revolveRadius;
-
+   vec3 m_axis;
    vector<Texture> m_textures;
    mat4 m_modelMatrix;
-
    vector<SolarBody*> m_satellites;
+
+   OGLProgram* m_lastProgram; // only for uniforms optimization
 };

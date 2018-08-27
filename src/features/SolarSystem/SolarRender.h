@@ -44,5 +44,3 @@ namespace Features
         void OnResize(unsigned int width, unsigned int height) override;
 };
 }
-
-#pragma once

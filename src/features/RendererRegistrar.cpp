@@ -2,7 +2,8 @@
 #include <mutex>
 
 #include "Test/TestRenderer.h"
-#include"SolarSystem\SolarRender.h"
+#include "SolarSystem\SolarRender.h"
+#include "schaudhary\SolarSystemExt.h"
 
 namespace Features
 {
@@ -28,7 +29,8 @@ namespace Features
             END_SCENE_TYPE()
 #endif
             BEGIN_SCENE_TYPE(SCENE_SOLAR_SYSTEM)
-                    REGISTER_RENDERER(SolarSystemRenderer)
+                // REGISTER_RENDERER(SolarSystemRenderer)
+                REGISTER_RENDERER(SolarSystemExtRenderer)
             END_SCENE_TYPE()
             // register new renderer classes here, like Solar system added above.
         END_RENDERER_MAP(renderers)

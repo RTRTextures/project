@@ -1,9 +1,7 @@
 #include <RendererRegistrar.h>
 #include <mutex>
 
-#include "Test/TestRenderer.h"
-#include "SolarSystem\SolarRender.h"
-#include "schaudhary\SolarSystemExt.h"
+#include "SolarSystem\SolarSystemExt.h"
 
 namespace Features
 {

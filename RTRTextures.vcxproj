@@ -41,6 +41,14 @@
     <ClCompile Include="src\framework\WinFrameWorkUtil.cpp" />
     <ClCompile Include="src\framework\WinHost.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\SolarSystem\Shaders\fEarth.glsl" />
+    <None Include="res\SolarSystem\Shaders\fPlanet.glsl" />
+    <None Include="res\SolarSystem\Shaders\fSun.glsl" />
+    <None Include="res\SolarSystem\Shaders\vEarth.glsl" />
+    <None Include="res\SolarSystem\Shaders\vPlanet.glsl" />
+    <None Include="res\SolarSystem\Shaders\vSun.glsl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D616B408-0BDC-4094-BA93-0FC1D23418F7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

@@ -25,6 +25,9 @@
     <Filter Include="src\features\SolarSystem\Entities">
       <UniqueIdentifier>{57134094-ea78-4d18-9dcd-e5645b2fdd7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\features\SolarSystem\Shaders">
+      <UniqueIdentifier>{3602e916-d6e8-4a1b-bbf1-04f430c97ade}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\features\RendererRegistrar.h">
@@ -86,5 +89,25 @@
     <ClCompile Include="src\features\SolarSystem\SolarSystemExt.cpp">
       <Filter>src\features\SolarSystem</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\SolarSystem\Shaders\fEarth.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
+    <None Include="res\SolarSystem\Shaders\fPlanet.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
+    <None Include="res\SolarSystem\Shaders\fSun.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
+    <None Include="res\SolarSystem\Shaders\vEarth.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
+    <None Include="res\SolarSystem\Shaders\vPlanet.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
+    <None Include="res\SolarSystem\Shaders\vSun.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

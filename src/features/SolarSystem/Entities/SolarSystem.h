@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SolarBody.h"
-#include <OGLProgram.h>
+#include "..\Framework\OGLProgram.h"
 
 class SolarSystem
 {

@@ -1,9 +1,8 @@
 #pragma once
 
 #include <glew.h>
-#include <gl\GL.h>
 
-#include <glm/glm.hpp>
+#include <glm.hpp>
 using glm::vec3;
 using glm::mat4;
 
@@ -11,7 +10,7 @@ using glm::mat4;
 #include <string>
 using namespace std;
 
-#include <OGLProgram.h>
+#include "..\Framework\OGLProgram.h"
 
 class SolarBody
 {

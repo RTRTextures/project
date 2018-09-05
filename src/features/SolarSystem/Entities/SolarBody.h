@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glew.h>
-#include <gl\GL.h>
 
 #include <glm/glm.hpp>
 using glm::vec3;

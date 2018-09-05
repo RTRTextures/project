@@ -11,7 +11,7 @@ GLuint SolarBody::m_vao = 0;
 size_t SolarBody::m_count = 0;
 bool SolarBody::m_isInitialized;
 
-const float speedScale = 1.0f;
+const float speedScale = 0.1f;
 
 //-------------------------------------------------------------------------------------------------------
 const vec3& SolarBody::RotateAroundAxis(vec3 axis, float radius, float angle)
@@ -35,7 +35,7 @@ const vec3& SolarBody::RotateAroundAxis(vec3 axis, float radius, float angle)
 SolarBody::SolarBody(const SolarData& data)
 {
    m_scale = data.scale;
-   m_rotateSpeed = speedScale * data.rotation_speed;
+   m_rotateSpeed = data.rotation_speed;
    m_revolveSpeed = speedScale * data.revolution_speed;
    m_revolveRadius = data.revolution_radius;
 

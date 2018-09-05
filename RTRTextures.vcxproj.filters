@@ -57,6 +57,9 @@
     <ClInclude Include="src\features\SolarSystem\SolarSystemExt.h">
       <Filter>src\features\SolarSystem</Filter>
     </ClInclude>
+    <ClInclude Include="src\features\SolarSystem\Entities\Space.h">
+      <Filter>src\features\SolarSystem\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\features\RendererRegistrar.cpp">
@@ -89,6 +92,9 @@
     <ClCompile Include="src\features\SolarSystem\SolarSystemExt.cpp">
       <Filter>src\features\SolarSystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\features\SolarSystem\Entities\Space.cpp">
+      <Filter>src\features\SolarSystem\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\SolarSystem\Shaders\fEarth.glsl">
@@ -107,6 +113,12 @@
       <Filter>src\features\SolarSystem\Shaders</Filter>
     </None>
     <None Include="res\SolarSystem\Shaders\vSun.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
+    <None Include="res\SolarSystem\Shaders\fSpace.glsl">
+      <Filter>src\features\SolarSystem\Shaders</Filter>
+    </None>
+    <None Include="res\SolarSystem\Shaders\vSpace.glsl">
       <Filter>src\features\SolarSystem\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -15,13 +15,14 @@ using namespace Utility;
 
 #include "Entities\SolarBody.h"
 #include "Entities\SolarSystem.h"
+#include "Entities\Space.h"
 
 #include <random>
 using namespace Features;
 
 /*----------------------------------------------------------------------------------------------------------*/
 //Global variable declarations
-OGLProgram programPlanet, programEarth, programSun;
+OGLProgram programPlanet, programEarth, programSun, programSpace;
 
 vec2 mousePos;
 Camera camera;
@@ -44,6 +45,8 @@ typedef enum
 
 SolarBody* planets[lastPlanet];
 SolarSystem solarSystem;
+Space space(100000000.0f);
+//Space space(20000.0f);
 
 mat4 modelMatrix, projectionMatrix;
 const float distMercurySun = 6000.0f;
@@ -236,6 +239,16 @@ RendererResult SolarSystemExtRenderer::Initialize(Window window)
 
    string msg;
 
+   if(!programSpace.Initialize("res/SolarSystem/Shaders/vSpace.glsl",
+                               "res/SolarSystem/Shaders/fSpace.glsl",
+                               "",
+                               "",
+                               "",
+                               msg)) {
+      MessageBoxA(NULL, msg.c_str(), "ERROR", MB_OK);
+      return RENDERER_RESULT_ERROR;
+   }
+
    if(!programPlanet.Initialize("res/SolarSystem/Shaders/vPlanet.glsl",
                                 "res/SolarSystem/Shaders/fPlanet.glsl",
                                 "",
@@ -271,6 +284,10 @@ RendererResult SolarSystemExtRenderer::Initialize(Window window)
    if(!InitSolarSystem())
       return RENDERER_RESULT_ERROR;
 
+   if(!space.Initialize()) {
+      return RENDERER_RESULT_ERROR;
+   }
+
    camera.Set(vec3(-8967.87109f, 370.465637f, 14319.4648f), vec3(0.747302055f, -0.00399998995f, -0.664473951f));
    camera.SetSpeed(390.0f);
 
@@ -295,6 +312,29 @@ void SolarSystemExtRenderer::UninitializeScene(SceneType scene)
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
+void RenderSpace()
+{
+   static mat4 projView;
+
+   glDisable(GL_CULL_FACE);
+
+   programSpace.Use(true);
+
+   projView = projectionMatrix * camera.GetViewMatrix();
+
+   static GLint uniformProjViewMatrix = programSpace.GetUniformLocation("projectionViewMatrix");
+   static GLint uniformCubeSampler = programSpace.GetUniformLocation("cubeSampler");
+
+   glUniformMatrix4fv(uniformProjViewMatrix, 1, GL_FALSE, &projView[0][0]);
+   glUniform1i(uniformCubeSampler, 99);
+
+   space.Render(GL_QUADS);
+
+   programSpace.Use(false);
+   glEnable(GL_CULL_FACE);
+}
+
+/*----------------------------------------------------------------------------------------------------------*/
 void RenderSun()
 {
    static float start = 0.0f;
@@ -311,6 +351,7 @@ RendererResult SolarSystemExtRenderer::Render(const RenderParams &params)
    RendererResult result = RENDERER_RESULT_SUCCESS;
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+   RenderSpace();
    RenderSun();
 
    for(int planet = mercury; planet < earth; planet++) {
@@ -422,7 +463,7 @@ void SolarSystemExtRenderer::OnResize(unsigned int width, unsigned int height)
    if(height == 0)
       height = 1;
 
-   projectionMatrix = glm::perspective(glm::radians(45.0f), float(width) / float(height), 0.1f, 1000000.0f);
+   projectionMatrix = glm::perspective(glm::radians(45.0f), float(width) / float(height), 0.1f, 1000000000.0f);
 
    glViewport(0, 0, (GLsizei) width, (GLsizei) height);
 }

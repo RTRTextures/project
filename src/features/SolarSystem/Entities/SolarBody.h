@@ -49,11 +49,15 @@ public:
    unsigned int GetDiffuseTextureId();
 
    bool AddSatellite(const SolarData& data);
-   void Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix, const mat4& offsetMatrix = mat4());
+   void Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMatrix, const mat4& offsetMatrix = mat4(1.0));
 
-private:
+public:
    const vec3& RotateAroundAxis(vec3 axis, float radius, float angle);
+   float m_rotateSpeed, m_rotateAngle;
+   float m_revolveSpeed, m_revolveAngle, m_revolveRadius;
+   vec3 m_axis;
 
+   float m_scale;
 private:
    static GLuint m_vertexBuffer, m_normalBuffer, m_textureBuffer, m_tangentBuffer, m_vao;
    static bool m_isInitialized;
@@ -61,10 +65,7 @@ private:
 
    unsigned int m_diffuseTextureId;
    
-   float m_scale;
-   float m_rotateSpeed, m_rotateAngle;
-   float m_revolveSpeed, m_revolveAngle, m_revolveRadius;
-   vec3 m_axis;
+  
    vector<Texture> m_textures;
    mat4 m_modelMatrix;
    vector<SolarBody*> m_satellites;

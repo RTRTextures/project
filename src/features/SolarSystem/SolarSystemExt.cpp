@@ -5,6 +5,7 @@
 using namespace std;
 
 #include <glm\glm.hpp>
+#include <glm\gtc\type_ptr.hpp>
 #include <glm\gtx\transform.hpp>
 using glm::mat4;
 using glm::vec2;
@@ -17,12 +18,57 @@ using namespace Utility;
 #include "Entities\SolarSystem.h"
 #include "Entities\Space.h"
 
+#include "..\VSIUtilMeshLoader.h"
+#include "VSIUtilTexture.h"
+#include "..\VSIUtilShader.h"
+#include "VSIUtil.h"
 #include <random>
+#include "Noise.h"
+#include "Perlin.h"
+#include "SOIL.h"
+
 using namespace Features;
 
+extern int g_CameraIteratorIndex;
 /*----------------------------------------------------------------------------------------------------------*/
 //Global variable declarations
 OGLProgram programPlanet, programEarth, programSun, programSpace;
+
+/************** Rohit Changes for SUN ****************/
+std::vector<glm::vec3> mVSIVertices;
+std::vector<glm::vec2> mVSITextureCoords;
+std::vector<glm::vec3> mVSINormals;
+GLuint mProjMatLocation;
+GLuint mMVLocation;
+GLuint mOffsetLocation;
+GLuint mVaoSun;
+GLuint buffer[3];
+int  mNoise3DTexSize = 128;
+GLuint mNoise3DTexName;
+GLubyte *mNoise3DTexPtr;
+GLuint mProgramObjSun;
+GLuint textureSun;
+
+/*** Sun Bloom Effect ***/
+GLuint renderFboSun;
+GLuint texBrightpassSun;
+GLuint filterFboSun[2];
+GLuint texFilterSun[2];
+GLuint texLutSun;
+GLuint g_progObjBloomScene;
+GLuint g_progObjBloomFilter;
+GLuint g_progObjBloomResolve;
+GLuint g_Resolve_Exposure;
+
+enum
+{
+    MAX_SCENE_WIDTH = 2048,
+    MAX_SCENE_HEIGHT = 2048
+};
+
+GLuint g_noiseFbo;
+GLuint g_noiseFboTexture;
+/************** Rohit Changes for SUN ****************/
 
 vec2 mousePos;
 Camera camera;
@@ -88,14 +134,14 @@ bool SolarSystemExtRenderer::InitSolarSystem()
    // any abitrary rotation axis is supported though !
    data.axis = vec3(0.0f, 1.0f, 0.0f);
 
-   data.scale = 9.7493f;
-   data.rotation_speed = 0.0f;
-   data.revolution_speed = 0.0f;
-   data.revolution_radius = 0.0f;
-   data.texture_file = "res/SolarSystem/textures/planets/sun.jpg";
-   data.textureUnit = GL_TEXTURE0 + (count++);
-   data.mipmap = true;
-   planets[sun] = new SolarBody(data);
+  // data.scale = 4000.7493f;
+  // data.rotation_speed = 0.0f;
+  // data.revolution_speed = 0.0f;
+  // data.revolution_radius = 0.0f;
+  // data.texture_file = "res/SolarSystem/textures/planets/sun.jpg";
+  // data.textureUnit = GL_TEXTURE0 + (count++);
+  // data.mipmap = true;
+  // planets[sun] = new SolarBody(data);
 
    data.scale = 0.0342f;
    data.rotation_speed = 0.02f;
@@ -117,8 +163,8 @@ bool SolarSystemExtRenderer::InitSolarSystem()
 
    data.scale = 0.0892f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.004f;
-   data.revolution_radius = distMercurySun * 2.292f;
+   data.revolution_speed = 0.09f;
+   data.revolution_radius = distMercurySun * 1.992f;
    data.texture_file = "res/SolarSystem/textures/planets/earth.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
    data.mipmap = true;
@@ -142,8 +188,8 @@ bool SolarSystemExtRenderer::InitSolarSystem()
 
    data.scale = 1.0f;
    data.rotation_speed = 0.2f;
-   data.revolution_speed = 0.019f;
-   data.revolution_radius = distMercurySun * 7.717f;
+   data.revolution_speed = 0.108f;
+   data.revolution_radius = distMercurySun * 3.717f;
    data.texture_file = "res/SolarSystem/textures/planets/jupiter.jpg";
    data.textureUnit = GL_TEXTURE0 + (count++);
    data.mipmap = true;
@@ -218,6 +264,106 @@ bool SolarSystemExtRenderer::InitSolarSystem()
    return true;
 }
 /*----------------------------------------------------------------------------------------------------------*/
+void Make3DNoiseTexture(void)
+{
+    int f, i, j, k, inc;
+    int startFrequency = 25;
+    int numOctaves = 4;
+    double ni[3];
+    double inci, incj, inck;
+    int frequency = startFrequency;
+    GLubyte *ptr;
+    double amplitude = 0.6;
+
+
+    if ((mNoise3DTexPtr = (GLubyte*)malloc(mNoise3DTexSize *
+        mNoise3DTexSize *
+        mNoise3DTexSize * 4)) == NULL)
+    {
+        return;
+    }
+
+    for (f = 0, inc = 0; f < numOctaves;
+        ++f, frequency *= 2, ++inc, amplitude *= 0.5)
+    {
+        ptr = mNoise3DTexPtr;
+        ni[0] = ni[1] = ni[2] = 0;
+
+        inci = 1.0 / (mNoise3DTexSize / frequency);
+
+        for (i = 0; i < mNoise3DTexSize; ++i, ni[0] += inci)
+        {
+            incj = 1.0 / (mNoise3DTexSize / frequency);
+            for (j = 0; j < mNoise3DTexSize; ++j, ni[1] += incj)
+            {
+                inck = 1.0 / (mNoise3DTexSize / frequency);
+                for (k = 0; k < mNoise3DTexSize; ++k, ni[2] += inck, ptr += 4)
+                {
+                    *(ptr + inc) = (GLubyte)(((noise3(ni) + 1.0) * amplitude) * 128.0);
+                }
+            }
+        }
+    }
+}
+
+void LoadTexture()
+{
+    glGenTextures(1, &mNoise3DTexName);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_3D, mNoise3DTexName);
+    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, mNoise3DTexSize,
+        mNoise3DTexSize, mNoise3DTexSize, 0, GL_RGBA,
+        GL_UNSIGNED_BYTE, mNoise3DTexPtr);
+}
+
+int VSIUtilLoadTexture(char* imageFile, GLuint* texture)
+{
+    GLvoid* image;
+    int iRetVal = 0;
+    int width, height;
+    /* load an image file directly as a new OpenGL texture */
+
+    image = SOIL_load_image
+    (
+        imageFile,
+        &width,
+        &height,
+        0,
+        SOIL_LOAD_RGBA
+    );
+    if (image == NULL)
+    {
+        const char* ch = SOIL_last_result();
+        MessageBoxA(NULL, ch, "ERROR", MB_OK);
+        return -1;
+    }
+    glGenTextures(1, texture);
+    glBindTexture(GL_TEXTURE_2D, *texture);
+    glTexStorage2D(GL_TEXTURE_2D, 8, GL_RGB8, width, height);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    return 0;
+}
+
+void LoadBloomShaders()
+{
+    g_progObjBloomScene = VSIUtilLoadShaders("VSIDemoSiliconAtomBloomScene.vs.glsl", "VSIDemoSiliconAtomBloomScene.fs.glsl");
+    g_progObjBloomFilter = VSIUtilLoadShaders("VSIDemoSiliconAtomBloomFilter.vs.glsl", "VSIDemoSiliconAtomBloomFilter.fs.glsl");
+
+    g_progObjBloomResolve = VSIUtilLoadShaders("VSIDemoSiliconAtomResolve.vs.glsl", "VSIDemoSiliconAtomResolve.fs.glsl");
+    g_Resolve_Exposure = glGetUniformLocation(g_progObjBloomResolve, "exposure");
+}
 
 RendererResult SolarSystemExtRenderer::Initialize(Window window)
 {
@@ -270,23 +416,88 @@ RendererResult SolarSystemExtRenderer::Initialize(Window window)
       return RENDERER_RESULT_ERROR;
    }
 
-   if(!programSun.Initialize("res/SolarSystem/Shaders/vSun.glsl",
-                             "res/SolarSystem/Shaders/fSun.glsl",
-                             "",
-                             "",
-                             "",
-                             msg)) {
-      MessageBoxA(NULL, msg.c_str(), "ERROR", MB_OK);
-      return RENDERER_RESULT_ERROR;
-   }
+  //if(!programSun.Initialize("res/SolarSystem/Shaders/vSun.glsl",
+  //                          "res/SolarSystem/Shaders/fSun.glsl",
+  //                          "",
+  //                          "",
+  //                          "",
+  //                          msg)) {
+  //   MessageBoxA(NULL, msg.c_str(), "ERROR", MB_OK);
+  //
+  //   return RENDERER_RESULT_ERROR;
+  //}
+  /******************Rohit Changes for SUN **********************/
+   VSIUtilLoadMesh("Sphere.obj", VERTEX_NORMAL_AND_TEXTURE, mVSIVertices, mVSITextureCoords, mVSINormals);
+//   LoadBloomShaders();
+   mProgramObjSun = VSIUtilLoadShaders("res/SolarSystem/Shaders/vSun.glsl", "res/SolarSystem/Shaders/fSun.glsl");
+   mProjMatLocation = glGetUniformLocation(mProgramObjSun, "projectionViewMatrix");
+   mMVLocation = glGetUniformLocation(mProgramObjSun, "modelMatrix");
+   mOffsetLocation = glGetUniformLocation(mProgramObjSun, "offset");
 
-   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-   if(!InitSolarSystem())
-      return RENDERER_RESULT_ERROR;
+   glGenVertexArrays(1, &mVaoSun);
+   glBindVertexArray(mVaoSun);
 
-   if(!space.Initialize()) {
-      return RENDERER_RESULT_ERROR;
-   }
+   glGenBuffers(1, &buffer[0]);
+   glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+   glBufferData(GL_ARRAY_BUFFER, (mVSIVertices.size() * sizeof(glm::vec3)), &(mVSIVertices[0].x), GL_STATIC_DRAW);
+   glEnableVertexAttribArray(0);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+   Make3DNoiseTexture();
+   LoadTexture();
+
+  // glGenFramebuffers(1, &g_noiseFbo);
+  // glBindFramebuffer(GL_FRAMEBUFFER, g_noiseFbo);
+  // glGenTextures(1, &g_noiseFboTexture);
+  // glBindTexture(GL_TEXTURE_2D, g_noiseFboTexture);
+  // glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, MAX_SCENE_WIDTH, MAX_SCENE_HEIGHT);
+  // glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texBrightpassSun, 0);
+  // static const GLenum noiseFboDrawBuffers[] = { GL_COLOR_ATTACHMENT0 };
+  // glDrawBuffers(1, noiseFboDrawBuffers);
+  //
+  // static const GLenum bloombuffers[] = { GL_COLOR_ATTACHMENT0 };
+  // static const GLfloat exposureLUT[20] = { 11.0f, 6.0f, 3.2f, 2.8f, 2.2f, 1.90f, 1.80f, 1.80f, 1.70f, 1.70f,  1.60f, 1.60f, 1.50f, 1.50f, 1.40f, 1.40f, 1.30f, 1.20f, 1.10f, 1.00f };
+  // 
+  // glGenFramebuffers(1, &renderFboSun);
+  // glBindFramebuffer(GL_FRAMEBUFFER, renderFboSun);
+  // glGenTextures(1, &texBrightpassSun);
+  // glBindTexture(GL_TEXTURE_2D, texBrightpassSun);
+  // glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, MAX_SCENE_WIDTH, MAX_SCENE_HEIGHT);
+  // glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texBrightpassSun, 0);
+  // glDrawBuffers(1, bloombuffers);
+  //
+  // glGenFramebuffers(2, &filterFboSun[0]);
+  // glGenTextures(2, &texFilterSun[0]);
+  // for (int i = 0; i < 2; i++)
+  // {
+  //     glBindFramebuffer(GL_FRAMEBUFFER, filterFboSun[i]);
+  //     glBindTexture(GL_TEXTURE_2D, texFilterSun[i]);
+  //     glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, i ? MAX_SCENE_WIDTH : MAX_SCENE_HEIGHT, i ? MAX_SCENE_HEIGHT : MAX_SCENE_WIDTH);
+  //     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texFilterSun[i], 0);
+  //     glDrawBuffers(1, bloombuffers);
+  // }
+  //
+  // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  //
+  // glGenTextures(1, &texLutSun);
+  // glBindTexture(GL_TEXTURE_1D, texLutSun);
+  // glTexStorage1D(GL_TEXTURE_1D, 1, GL_R32F, 20);
+  // glTexSubImage1D(GL_TEXTURE_1D, 0, 0, 20, GL_RED, GL_FLOAT, exposureLUT);
+  // glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  // glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+
+   glBindVertexArray(0);
+
+   /******************Rohit Changes for SUN **********************/
+
+  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  if(!InitSolarSystem())
+     return RENDERER_RESULT_ERROR;
+
+  if(!space.Initialize()) {
+     return RENDERER_RESULT_ERROR;
+  }
 
    camera.Set(vec3(-8967.87109f, 370.465637f, 14319.4648f), vec3(0.747302055f, -0.00399998995f, -0.664473951f));
    camera.SetSpeed(390.0f);
@@ -337,13 +548,60 @@ void RenderSpace()
 /*----------------------------------------------------------------------------------------------------------*/
 void RenderSun()
 {
-   static float start = 0.0f;
-   programSun.Use(true);
-   static GLint uniformStart = programSun.GetUniformLocation("start");
-   start += 0.00016f;
-   glUniform1f(uniformStart, start);
+    static GLfloat offset = 0.1f;
+    //glBindFramebuffer(GL_FRAMEBUFFER, g_noiseFbo);
+    glUseProgram(mProgramObjSun);
 
-   planets[sun]->Render(programSun, projectionMatrix, camera.GetViewMatrix());
+    mat4 modelMatrix = mat4(1.0);
+
+    modelMatrix = glm::scale(modelMatrix, vec3(4000.7493f));
+
+    static mat4 projectionViewMatrix;
+    projectionViewMatrix = projectionMatrix * camera.GetViewMatrix();
+
+    glUniformMatrix4fv(mMVLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    glUniformMatrix4fv(mProjMatLocation, 1, GL_FALSE, glm::value_ptr(projectionViewMatrix));
+    glUniform1f(mOffsetLocation, offset);
+    offset += 0.00005f;
+    glBindVertexArray(mVaoSun);
+    glActiveTexture(GL_TEXTURE0);
+    glDrawArrays(GL_TRIANGLES, 0, mVSIVertices.size());
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    /*******Bloom Code begins *******/
+    //glUseProgram(g_progObjBloomScene);
+    //glBindFramebuffer(GL_FRAMEBUFFER, renderFboSun);
+    //glDrawBuffer(GL_BACK);
+    //glActiveTexture(GL_TEXTURE0);
+    //glBindTexture(GL_TEXTURE_2D, g_noiseFboTexture);
+    //
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    //glDisable(GL_DEPTH_TEST);
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glUseProgram(g_progObjBloomFilter);
+    //
+    //glBindFramebuffer(GL_FRAMEBUFFER, filterFboSun[0]);
+    //glBindTexture(GL_TEXTURE_2D, texBrightpassSun);
+    //
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glBindFramebuffer(GL_FRAMEBUFFER, filterFboSun[1]);
+    //glBindTexture(GL_TEXTURE_2D, texFilterSun[0]);
+    //
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    //glUseProgram(g_progObjBloomResolve);
+    //
+    //static GLfloat e = 0.0;
+    //glUniform1f(g_Resolve_Exposure, e);
+    //e +=0.001;
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glActiveTexture(GL_TEXTURE0);
+    //
+    //glBindTexture(GL_TEXTURE_2D, texFilterSun[1]);
+    //glActiveTexture(GL_TEXTURE1);
+    //glBindTexture(GL_TEXTURE_2D, g_noiseFboTexture);
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
 }
 
 RendererResult SolarSystemExtRenderer::Render(const RenderParams &params)
@@ -357,13 +615,18 @@ RendererResult SolarSystemExtRenderer::Render(const RenderParams &params)
    for(int planet = mercury; planet < earth; planet++) {
       planets[planet]->Render(programPlanet, projectionMatrix, camera.GetViewMatrix());
    }
-
+   
    for(int planet = mars; planet < lastPlanet; planet++) {
       planets[planet]->Render(programPlanet, projectionMatrix, camera.GetViewMatrix());
    }
-
+   
    planets[earth]->Render(programEarth, projectionMatrix, camera.GetViewMatrix());
-
+   
+   if (g_CameraIteratorIndex >= 1350)
+   {
+       return RENDERER_RESULT_FINISHED;
+   }
+ 
    return result;
 }
 

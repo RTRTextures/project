@@ -20,6 +20,7 @@ public:
                    string& msg);
    void Use(bool value);
    GLint GetUniformLocation(const char* uniformName);
+   GLuint m_program;
 
 private:
    bool CreateAndCompileShader(GLenum shader, const string& file, string& msg);
@@ -27,7 +28,6 @@ private:
    bool CheckStatus(string& error);
 
 private:
-   GLuint m_program;
    GLuint m_vShader, m_fShader, m_tcsShader, m_tesShader, m_geomShader;
 };
 

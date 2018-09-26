@@ -7,3 +7,5 @@
 void VSIUtilLoadCubeMapTextures(
     std::vector<std::string> textureFiles, 
     GLuint *texture);
+
+int VSIUtilLoadTexture(char* imageFile, GLuint* texture);

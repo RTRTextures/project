@@ -18,9 +18,9 @@ using namespace Utility;
 #include "Entities\SolarSystem.h"
 #include "Entities\Space.h"
 
-#include "..\VSIUtilMeshLoader.h"
+#include "VSIUtilMeshLoader.h"
 #include "VSIUtilTexture.h"
-#include "..\VSIUtilShader.h"
+#include "VSIUtilShader.h"
 #include "VSIUtil.h"
 #include <random>
 #include "Noise.h"
@@ -322,40 +322,6 @@ void LoadTexture()
         GL_UNSIGNED_BYTE, mNoise3DTexPtr);
 }
 
-int VSIUtilLoadTexture(char* imageFile, GLuint* texture)
-{
-    GLvoid* image;
-    int iRetVal = 0;
-    int width, height;
-    /* load an image file directly as a new OpenGL texture */
-
-    image = SOIL_load_image
-    (
-        imageFile,
-        &width,
-        &height,
-        0,
-        SOIL_LOAD_RGBA
-    );
-    if (image == NULL)
-    {
-        const char* ch = SOIL_last_result();
-        MessageBoxA(NULL, ch, "ERROR", MB_OK);
-        return -1;
-    }
-    glGenTextures(1, texture);
-    glBindTexture(GL_TEXTURE_2D, *texture);
-    glTexStorage2D(GL_TEXTURE_2D, 8, GL_RGB8, width, height);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    return 0;
-}
-
 void LoadBloomShaders()
 {
     g_progObjBloomScene = VSIUtilLoadShaders("VSIDemoSiliconAtomBloomScene.vs.glsl", "VSIDemoSiliconAtomBloomScene.fs.glsl");
@@ -611,7 +577,7 @@ RendererResult SolarSystemExtRenderer::Render(const RenderParams &params)
 
    RenderSpace();
    RenderSun();
-
+ 
    for(int planet = mercury; planet < earth; planet++) {
       planets[planet]->Render(programPlanet, projectionMatrix, camera.GetViewMatrix());
    }
@@ -622,7 +588,7 @@ RendererResult SolarSystemExtRenderer::Render(const RenderParams &params)
    
    planets[earth]->Render(programEarth, projectionMatrix, camera.GetViewMatrix());
    
-   if (g_CameraIteratorIndex >= 1350)
+   if (g_CameraIteratorIndex >= 1360)
    {
        return RENDERER_RESULT_FINISHED;
    }

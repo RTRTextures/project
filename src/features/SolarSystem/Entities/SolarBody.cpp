@@ -144,11 +144,11 @@ void SolarBody::Render(OGLProgram& program, mat4& projectionMatrix, mat4 viewMat
    static GLint uniformSampler;
 
    program.Use(true);
-  //if(m_lastProgram != &program) 
-   {
+   if(m_lastProgram != &program) {
       uniformModelMatrix = program.GetUniformLocation("modelMatrix");
       uniformProjectionViewMatrix = program.GetUniformLocation("projectionViewMatrix");
       uniformSampler = program.GetUniformLocation("sampler");
+
       m_lastProgram = &program;
    }
 

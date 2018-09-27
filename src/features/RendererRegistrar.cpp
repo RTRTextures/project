@@ -2,7 +2,6 @@
 #include <mutex>
 
 #include "SolarSystem\SolarSystemExt.h"
-#include "SiliconAtom\SiliconAtom.h"
 
 namespace Features
 {
@@ -22,9 +21,6 @@ namespace Features
         INIT_RENDERER_MAP(renderers)
             BEGIN_SCENE_TYPE(SCENE_SOLAR_SYSTEM)
                 REGISTER_RENDERER(SolarSystemExtRenderer)
-            END_SCENE_TYPE()
-            BEGIN_SCENE_TYPE(SCENE_SILICON_ATOMS)
-                REGISTER_RENDERER(SiliconAtom)
             END_SCENE_TYPE()
             // register new renderer classes here, like Solar system added above.
         END_RENDERER_MAP(renderers)

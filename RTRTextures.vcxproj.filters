@@ -28,12 +28,6 @@
     <Filter Include="src\features\SolarSystem\Shaders">
       <UniqueIdentifier>{3602e916-d6e8-4a1b-bbf1-04f430c97ade}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\features\SiliconAtom">
-      <UniqueIdentifier>{695f60c9-742e-45db-922f-86e5cfcc38d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\features\SiliconAtom\Shaders">
-      <UniqueIdentifier>{d09bd254-99bd-417e-91af-c9f96293e709}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\features\RendererRegistrar.h">
@@ -65,33 +59,6 @@
     </ClInclude>
     <ClInclude Include="src\features\SolarSystem\Entities\Space.h">
       <Filter>src\features\SolarSystem\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="VSIModelObject.h">
-      <Filter>src\features\SolarSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="common\src\Noise.h">
-      <Filter>common\src</Filter>
-    </ClInclude>
-    <ClInclude Include="common\src\Perlin.h">
-      <Filter>common\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\features\SiliconAtom\SiliconAtom.h">
-      <Filter>src\features\SiliconAtom</Filter>
-    </ClInclude>
-    <ClInclude Include="common\include\VSIUtil.h">
-      <Filter>common\include</Filter>
-    </ClInclude>
-    <ClInclude Include="common\include\VSIUtilMeshLoader.h">
-      <Filter>common\include</Filter>
-    </ClInclude>
-    <ClInclude Include="common\include\VSIUtilShader.h">
-      <Filter>common\include</Filter>
-    </ClInclude>
-    <ClInclude Include="common\include\VSIUtilTexture.h">
-      <Filter>common\include</Filter>
-    </ClInclude>
-    <ClInclude Include="common\include\VSIUtilBuffers.h">
-      <Filter>common\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -128,27 +95,6 @@
     <ClCompile Include="src\features\SolarSystem\Entities\Space.cpp">
       <Filter>src\features\SolarSystem\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="common\src\Noise.cpp">
-      <Filter>common\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\features\SiliconAtom\SiliconAtom.cpp">
-      <Filter>src\features\SiliconAtom</Filter>
-    </ClCompile>
-    <ClCompile Include="common\src\VSIUtil.cpp">
-      <Filter>common\src</Filter>
-    </ClCompile>
-    <ClCompile Include="common\src\VSIUtilTexture.cpp">
-      <Filter>common\src</Filter>
-    </ClCompile>
-    <ClCompile Include="common\src\VSIUtilShader.cpp">
-      <Filter>common\src</Filter>
-    </ClCompile>
-    <ClCompile Include="common\src\VSIUtilMeshLoader.cpp">
-      <Filter>common\src</Filter>
-    </ClCompile>
-    <ClCompile Include="common\src\VSIUtilBuffers.cpp">
-      <Filter>common\src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\SolarSystem\Shaders\fEarth.glsl">
@@ -174,18 +120,6 @@
     </None>
     <None Include="res\SolarSystem\Shaders\vSpace.glsl">
       <Filter>src\features\SolarSystem\Shaders</Filter>
-    </None>
-    <None Include="res\Silicon\Shaders\VSICubeMapping.fs.glsl">
-      <Filter>src\features\SiliconAtom\Shaders</Filter>
-    </None>
-    <None Include="res\Silicon\Shaders\VSICubeMapping.vs.glsl">
-      <Filter>src\features\SiliconAtom\Shaders</Filter>
-    </None>
-    <None Include="res\Silicon\Shaders\VSISilicon.fs.glsl">
-      <Filter>src\features\SiliconAtom\Shaders</Filter>
-    </None>
-    <None Include="res\Silicon\Shaders\VSISilicon.vs.glsl">
-      <Filter>src\features\SiliconAtom\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

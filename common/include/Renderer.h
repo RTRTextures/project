@@ -34,7 +34,8 @@ namespace Interfaces
         SCENE_TYPE_TEST0,
         SCENE_TYPE_TEST1,
         SCENE_SOLAR_SYSTEM,  // This will be the main solar system scene
-        SCENE_SILICON_ATOMS,
+        SCENE_NUCLEUS,
+        SCENE_ATOMS,
         SCENE_CHEMICAL_BONDS,
         SCENE_CONDUCTORS,
         SCENE_SILICON,

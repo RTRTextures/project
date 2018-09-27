@@ -1,6 +1,7 @@
 #include "OGLProgram.h"
 #include <fstream>
 #include <sstream>
+
 using namespace std;
 
 //--------------------------------------------------------------------------------------
@@ -66,6 +67,7 @@ bool OGLProgram::Initialize(const string& vShaderFile, const string& fShaderFile
 
    return (msg == "");
 }
+
 
 //--------------------------------------------------------------------------------------
 void OGLProgram::Use(bool value)

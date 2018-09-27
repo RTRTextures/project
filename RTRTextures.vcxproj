@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -23,18 +23,34 @@
     <ClInclude Include="common\include\Loader.h" />
     <ClInclude Include="common\include\OGLProgram.h" />
     <ClInclude Include="common\include\Renderer.h" />
+    <ClInclude Include="common\include\VSIUtil.h" />
+    <ClInclude Include="common\include\VSIUtilBuffers.h" />
+    <ClInclude Include="common\include\VSIUtilMeshLoader.h" />
+    <ClInclude Include="common\include\VSIUtilShader.h" />
+    <ClInclude Include="common\include\VSIUtilTexture.h" />
+    <ClInclude Include="common\src\Noise.h" />
+    <ClInclude Include="common\src\Perlin.h" />
     <ClInclude Include="src\features\RendererRegistrar.h" />
+    <ClInclude Include="src\features\SiliconAtom\SiliconAtom.h" />
     <ClInclude Include="src\features\SolarSystem\Entities\SolarBody.h" />
     <ClInclude Include="src\features\SolarSystem\Entities\SolarSystem.h" />
     <ClInclude Include="src\features\SolarSystem\Entities\Space.h" />
     <ClInclude Include="src\features\SolarSystem\SolarSystemExt.h" />
     <ClInclude Include="src\framework\Host.h" />
+    <ClInclude Include="VSIModelObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common\src\Camera.cpp" />
     <ClCompile Include="common\src\Loader.cpp" />
+    <ClCompile Include="common\src\Noise.cpp" />
     <ClCompile Include="common\src\OGLProgram.cpp" />
+    <ClCompile Include="common\src\VSIUtil.cpp" />
+    <ClCompile Include="common\src\VSIUtilBuffers.cpp" />
+    <ClCompile Include="common\src\VSIUtilMeshLoader.cpp" />
+    <ClCompile Include="common\src\VSIUtilShader.cpp" />
+    <ClCompile Include="common\src\VSIUtilTexture.cpp" />
     <ClCompile Include="src\features\RendererRegistrar.cpp" />
+    <ClCompile Include="src\features\SiliconAtom\SiliconAtom.cpp" />
     <ClCompile Include="src\features\SolarSystem\Entities\SolarBody.cpp" />
     <ClCompile Include="src\features\SolarSystem\Entities\SolarSystem.cpp" />
     <ClCompile Include="src\features\SolarSystem\Entities\Space.cpp" />
@@ -44,6 +60,10 @@
     <ClCompile Include="src\framework\WinHost.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\Silicon\Shaders\VSICubeMapping.fs.glsl" />
+    <None Include="res\Silicon\Shaders\VSICubeMapping.vs.glsl" />
+    <None Include="res\Silicon\Shaders\VSISilicon.fs.glsl" />
+    <None Include="res\Silicon\Shaders\VSISilicon.vs.glsl" />
     <None Include="res\SolarSystem\Shaders\fEarth.glsl" />
     <None Include="res\SolarSystem\Shaders\fPlanet.glsl" />
     <None Include="res\SolarSystem\Shaders\fSpace.glsl" />

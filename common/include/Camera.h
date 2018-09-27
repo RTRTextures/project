@@ -41,6 +41,9 @@ namespace Utility
       void LookRight();
       void LookUp();
       void LookDown();
+      
+      void LogCamera();
+      void LogCameraRotate();
 
       void Look(int i);
 
